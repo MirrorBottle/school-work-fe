@@ -20,11 +20,13 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import "assets/plugins/nucleo/css/nucleo.css";
+import "assets/css/custom.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
-
-import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/Auth.js";
+import "antd/dist/antd.css";
+import "moment/locale/id"
+import AdminLayout from "layouts/Admin";
+import AuthLayout from "layouts/Auth";
 
 ReactDOM.render(
   <BrowserRouter>

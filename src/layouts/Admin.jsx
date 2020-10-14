@@ -20,11 +20,11 @@ import { Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminFooter from "components/Footers/AdminFooter.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
+import AdminNavbar from "components/Navbars/AdminNavbar";
+import AdminFooter from "components/Footers/AdminFooter";
+import Sidebar from "components/Sidebar/Sidebar";
 
-import routes from "routes.js";
+import routes from "routes";
 
 class Admin extends React.Component {
   componentDidUpdate(e) {
@@ -32,19 +32,36 @@ class Admin extends React.Component {
     document.scrollingElement.scrollTop = 0;
     this.refs.mainContent.scrollTop = 0;
   }
-  getRoutes = routes => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+  getRoutes = (layoutRoutes) => {
+    return layoutRoutes.map((prop, key) => {
+      // if a route doesn't have any subMenu and its layout is admin
+      const propPath = prop.layout + prop.path;
+      if (prop.layout === "/admin" && !prop.subMenu) {
         return (
           <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
+            exact
+            path={propPath}
+            component={() => <prop.component />}
             key={key}
           />
         );
-      } else {
-        return null;
+        // For route that has suMenu, loop each item and find the exact route
+      } else if (prop.subMenu) {
+        return (
+          prop.subMenu !== undefined &&
+          prop.subMenu.map((prop, key) => {
+            return (
+              <Route
+                exact
+                path={prop.layout + prop.path}
+                component={prop.component}
+                key={key}
+              />
+            );
+          })
+        );
       }
+      return <Redirect to="/admin/error/404" key={key} />;
     });
   };
   getBrandText = path => {
@@ -60,14 +77,14 @@ class Admin extends React.Component {
     return "Brand";
   };
   render() {
-    return (
+    return localStorage.getItem("auth") ? (
       <>
         <Sidebar
           {...this.props}
           routes={routes}
           logo={{
             innerLink: "/admin/index",
-            imgSrc: require("assets/img/brand/argon-react.png"),
+            imgSrc: require("assets/img/brand/Koperasi-Simpan-Pinjam-Logo.svg"),
             imgAlt: "..."
           }}
         />
@@ -85,7 +102,9 @@ class Admin extends React.Component {
           </Container>
         </div>
       </>
-    );
+    ) : (
+        <Redirect to="/auth/login" />
+      );
   }
 }
 

@@ -1,77 +1,73 @@
-/*!
+import Index from "views/Index";
+import Login from "views/Auth/Login";
 
-=========================================================
-* Argon Dashboard React - v1.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
-import Register from "views/examples/Register.js";
-import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
-
+// Deposit
+import DepositIndex from "views/Deposit/DepositIndex";
+// Payment
+import PaymentIndex from "views/Payment/PaymentIndex";
+// Loan
+import LoanIndex from "views/Loan/LoanIndex"
+// User
+import UserIndex from "views/User/UserIndex"
+// Employee
+import EmployeeIndex from "views/Employee/EmployeeIndex"
 var routes = [
   {
     path: "/index",
     name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
+    icon: "fas fa-laptop",
     component: Index,
-    layout: "/admin"
+    layout: "/admin",
+    isSidemenu: true,
   },
   {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin"
+    path: "/loans",
+    name: "Peminjaman",
+    icon: "fas fa-money-check",
+    component: LoanIndex,
+    layout: "/admin",
+    isSidemenu: true,
   },
   {
-    path: "/maps",
-    name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
-    component: Maps,
-    layout: "/admin"
+    path: "/payments",
+    name: "Angsuran",
+    icon: "fas fa-money-bill",
+    component: PaymentIndex,
+    layout: "/admin",
+    isSidemenu: true,
   },
   {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin"
+    path: "/members",
+    name: "Pegawai",
+    icon: "fas fa-user-tie",
+    component: EmployeeIndex,
+    layout: "/admin",
+    isSidemenu: true,
   },
   {
-    path: "/tables",
-    name: "Tables",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Tables,
-    layout: "/admin"
+    path: "/users",
+    name: "Pengguna",
+    icon: "fas fa-user",
+    component: UserIndex,
+    layout: "/admin",
+    isSidemenu: true,
+  },
+  {
+    path: "/deposits",
+    name: "Setoran",
+    icon: "fas fa-database",
+    component: DepositIndex,
+    layout: "/admin",
+    isSidemenu: true,
   },
   {
     path: "/login",
     name: "Login",
-    icon: "ni ni-key-25 text-info",
+    icon: "ni ni-key-25",
     component: Login,
-    layout: "/auth"
+    layout: "/auth",
   },
-  {
-    path: "/register",
-    name: "Register",
-    icon: "ni ni-circle-08 text-pink",
-    component: Register,
-    layout: "/auth"
-  }
+
 ];
 export default routes;

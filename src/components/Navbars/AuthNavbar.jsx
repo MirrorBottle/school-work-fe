@@ -50,10 +50,15 @@ class AdminNavbar extends React.Component {
                 <Row>
                   <Col className="collapse-brand" xs="6">
                     <Link to="/">
-                      <img
-                        alt="..."
-                        src={require("assets/img/brand/argon-react.png")}
-                      />
+                      <div className="d-none d-md-block">
+                        <img
+                          alt="..."
+                          src={require("assets/img/brand/argon-react.png")}
+                        />
+                      </div>
+                      <div className="d-block d-sm-block d-md-block">
+                        <h2 className='font-weight-bold text-info'>Koperasi Simpan Pinjam</h2>
+                      </div>
                     </Link>
                   </Col>
                   <Col className="collapse-close" xs="6">
@@ -70,38 +75,8 @@ class AdminNavbar extends React.Component {
               <Nav className="ml-auto" navbar>
                 <NavItem>
                   <NavLink className="nav-link-icon" to="/" tag={Link}>
-                    <i className="ni ni-planet" />
-                    <span className="nav-link-inner--text">Dashboard</span>
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link-icon"
-                    to="/auth/register"
-                    tag={Link}
-                  >
-                    <i className="ni ni-circle-08" />
-                    <span className="nav-link-inner--text">Register</span>
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link-icon"
-                    to="/auth/login"
-                    tag={Link}
-                  >
-                    <i className="ni ni-key-25" />
-                    <span className="nav-link-inner--text">Login</span>
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link-icon"
-                    to="/admin/user-profile"
-                    tag={Link}
-                  >
-                    <i className="ni ni-single-02" />
-                    <span className="nav-link-inner--text">Profile</span>
+                    <i className="fas fa-book" />
+                    <span className="nav-link-inner--text">Guide</span>
                   </NavLink>
                 </NavItem>
               </Nav>
