@@ -11,29 +11,22 @@ import {
 import { Table, ActionDropdown } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import moment from "moment";
+import API from "api";
 class UserIndex extends React.Component {
     state = {
-        users: [
-            {
-                id: 1,
-                name: "Shyna",
-                gender: "0",
-                email: "shyna@gmail.com",
-                phoneNumber: "+628xxx",
-                joinDate: "10-10-2010",
-            },
-            {
-                id: 2,
-                name: "Lucas",
-                gender: "1",
-                email: "lucas@gmail.com",
-                phoneNumber: "+628xxx",
-                joinDate: "10-12-2010",
-            },
-        ]
+        isLoading: true,
+        users: []
+    }
+    componentDidMount() {
+        API().get('user')
+            .then((resp) => this.setState({
+                users: resp.data.users,
+                isLoading: false
+            }, () => console.log(resp, this.state)))
+            .catch((err) => console.log(err, err.response))
     }
     render() {
-        const { users } = this.state;
+        const { users, isLoading } = this.state;
         const columns = [
             {
                 key: "name",
@@ -43,8 +36,7 @@ class UserIndex extends React.Component {
             {
                 key: "gender",
                 title: "Jenis Kelamin",
-                dataIndex: "gender",
-                render: (text) => text === "0" ? "Perempuan" : "Laki-laki"
+                dataIndex: "gender"
             },
             {
                 key: "email",
@@ -90,6 +82,7 @@ class UserIndex extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 <Table
+                                    loading={isLoading}
                                     columns={columns}
                                     data={users}
                                 />

@@ -101,6 +101,15 @@ export default class CustomTable extends Component {
             if (column.key === "status" || column.key === "isActive") {
                 return { ...column };
             }
+            if("isCurrency" in column) {
+                return {
+                    ...column, 
+                    render: (value, record, index) => parseInt(value).toLocaleString('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR'
+                    })
+                }
+            }
             return column.key !== "action"
                 ? {
                     ...column,

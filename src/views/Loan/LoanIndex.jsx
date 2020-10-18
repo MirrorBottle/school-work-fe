@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import {
     Card,
     CardHeader,
@@ -11,31 +12,23 @@ import {
 } from "reactstrap";
 import { Table, OptionalBadge, ActionDropdown } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
+import API from "api";
 class LoanIndex extends React.Component {
     state = {
-        loans: [
-            {
-                id: 1,
-                userId: 1,
-                userName: "Shyna",
-                dueDate: "20-12-2020",
-                totalLoan: "10000000",
-                status: "Belum Divalidasi",
-                employeeName: "Mirana"
-            },
-            {
-                id: 2,
-                userId: 1,
-                userName: "Shyna",
-                dueDate: "25-12-2020",
-                totalLoan: "20000000",
-                status: "Belum Lunas",
-                employeeName: null
-            }
-        ]
+        isLoading: true,
+        loans: []
+    }
+    componentDidMount() {
+        API()
+            .get("loan")
+            .then((resp) => this.setState({
+                isLoading: false,
+                loans: resp.data.loans
+            }, () => console.log(resp)))
+            .catch((err) => console.log(err, err.response))
     }
     render() {
-        const { loans } = this.state;
+        const { loans, isLoading } = this.state;
         const columns = [
             {
                 key: "userName",
@@ -51,7 +44,7 @@ class LoanIndex extends React.Component {
                 key: "totalLoan",
                 title: "Total Pinjaman",
                 dataIndex: "totalLoan",
-                render: (text) => parseInt(text).toLocaleString('id-ID', {
+                render: (loan) => loan.toLocaleString('id-ID', {
                     style: 'currency',
                     currency: 'IDR'
                 })
@@ -93,7 +86,11 @@ class LoanIndex extends React.Component {
                 key: "action",
                 title: "Aksi",
                 dataIndex: "action",
-                render: () => <ActionDropdown />
+                render: (value, record) => <ActionDropdown
+                    onDetailClick={() => this.props.history.push(`/admin/loans/${record.id}`)}
+                    onEditClick={() => this.props.history.push(`/admin/loans/edit/${record.id}`)}
+                    onDeleteClick={() => console.log(record.id)}
+                />
             }
         ];
         return (
@@ -107,7 +104,7 @@ class LoanIndex extends React.Component {
                                         <h2 className="mb-0">Daftar Peminjaman</h2>
                                     </Col>
                                     <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
-                                        <Button color="dark">
+                                        <Button color="dark" onClick={() => this.props.history.push('/admin/loans/create')}>
                                             <i className="fas fa-plus mr-2"></i>
                                             Tambah
                                         </Button>
@@ -116,6 +113,7 @@ class LoanIndex extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 <Table
+                                    loading={isLoading}
                                     columns={columns}
                                     data={loans}
                                 />
@@ -128,4 +126,4 @@ class LoanIndex extends React.Component {
     }
 }
 
-export default withFadeIn(LoanIndex);
+export default withRouter(withFadeIn(LoanIndex));

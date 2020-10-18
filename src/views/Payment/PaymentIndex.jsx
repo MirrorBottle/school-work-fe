@@ -10,33 +10,23 @@ import {
 } from "reactstrap";
 import { Table, OptionalBadge, ActionDropdown } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
+import API from "api"
 class PaymentIndex extends React.Component {
     state = {
-        payments: [
-            {
-                id: 1,
-                loanId: 1,
-                userName: "Shyna",
-                userPhoneNumber: "+628xxx",
-                dueDate: "10-10-2020",
-                paymentNumber: 1,
-                paymentDate: "10-09-2020",
-                status: "Lunas",
-            },
-            {
-                id: 2,
-                loanId: 1,
-                userName: "Shyna",
-                userPhoneNumber: "+628xxx",
-                dueDate: "10-11-2020",
-                paymentNumber: 2,
-                paymentDate: null,
-                status: "Belum Lunas",
-            }
-        ]
+        isLoading: true,
+        payments: []
+    }
+    componentDidMount() {
+        API()
+            .get('payment')
+            .then((resp) => this.setState({
+                payments: resp.data.payments,
+                isLoading: false
+            }, () => console.log(resp)))
+            .catch((err) => console.log(err, err.response))
     }
     render() {
-        const { payments } = this.state;
+        const { payments, isLoading } = this.state;
         const columns = [
             {
                 key: "userName",
@@ -113,6 +103,7 @@ class PaymentIndex extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 <Table
+                                    loading={isLoading}
                                     columns={columns}
                                     data={payments}
                                 />

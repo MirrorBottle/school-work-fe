@@ -17,6 +17,8 @@
 */
 import React from "react";
 import { Link } from "react-router-dom";
+import { Avatar } from "antd";
+import user from "user";
 // reactstrap components
 import {
   DropdownMenu,
@@ -55,15 +57,12 @@ class AdminNavbar extends React.Component {
               <UncontrolledDropdown nav>
                 <DropdownToggle className="pr-0" nav>
                   <Media className="align-items-center">
-                    <span className="avatar avatar-sm rounded-circle">
-                      <img
-                        alt="..."
-                        src={require("assets/img/theme/team-4-800x800.jpg")}
-                      />
-                    </span>
+                    <Avatar style={{ color: '#fff', backgroundColor: '#FF6969' }}>
+                      <b>{(user("username") || "U").toString().toUpperCase().charAt(0)}</b>
+                    </Avatar>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                        Jessica Jones
+                        {user("username")}
                       </span>
                     </Media>
                   </Media>

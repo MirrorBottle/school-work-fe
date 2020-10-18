@@ -11,13 +11,9 @@ import {
 const ActionDropdown = ({
     onDetailClick,
     onEditClick,
-    onActiveClick,
     onDeleteClick,
-    onNonactiveClick,
     extraItem,
     isActive,
-    withoutActive,
-    withoutNonactive,
     withoutDelete,
     withoutDetail,
     withoutEdit,
@@ -39,7 +35,7 @@ const ActionDropdown = ({
                             style={{ cursor: "pointer" }}
                             onClick={onDetailClick && onDetailClick}
                         >
-                            <i className="fas fa-eye text-primary"></i>
+                            <i className="fas fa-eye text-dark"></i>
                         Detail
                         </DropdownItem>
                     )}
@@ -48,7 +44,7 @@ const ActionDropdown = ({
                             style={{ cursor: "pointer" }}
                             onClick={onEditClick && onEditClick}
                         >
-                            <i className="fas fa-pencil-alt text-info"></i>
+                            <i className="fas fa-edit text-primary"></i>
                         Edit
                         </DropdownItem>
                     )}

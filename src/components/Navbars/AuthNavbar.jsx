@@ -40,7 +40,9 @@ class AdminNavbar extends React.Component {
         >
           <Container className="px-4">
             <NavbarBrand to="/" tag={Link}>
-              <img alt="..." src={require("assets/img/brand/argon-react-white.png")} />
+              <div className="d-block d-sm-block d-md-none d-flex justify-content-center align-items-center">
+                <h2 className='font-weight-bold text-white'>Koperasi Simpan Pinjam</h2>
+              </div>
             </NavbarBrand>
             <button className="navbar-toggler" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />
@@ -57,7 +59,7 @@ class AdminNavbar extends React.Component {
                         />
                       </div>
                       <div className="d-block d-sm-block d-md-block">
-                        <h2 className='font-weight-bold text-info'>Koperasi Simpan Pinjam</h2>
+                        <h2 className='font-weight-bold text-primary'>Koperasi Simpan Pinjam</h2>
                       </div>
                     </Link>
                   </Col>

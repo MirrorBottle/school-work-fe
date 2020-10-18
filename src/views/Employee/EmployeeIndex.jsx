@@ -11,27 +11,23 @@ import {
 import { Table, ActionDropdown } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import moment from "moment";
+import API from "api"
 class EmployeeIndex extends React.Component {
     state = {
-        users: [
-            {
-                id: 1,
-                name: "Mirana",
-                gender: "0",
-                email: "mirana@gmail.com",
-                phoneNumber: "+628xxx",
-            },
-            {
-                id: 2,
-                name: "Lucas",
-                gender: "1",
-                email: "lucas@gmail.com",
-                phoneNumber: "+628xxx",
-            },
-        ]
+        users: [],
+        isLoading: true,
+    }
+    componentDidMount() {
+        API()
+            .get('employee')
+            .then((resp) => this.setState({
+                users: resp.data.users,
+                isLoading: false
+            }, () => console.log(resp)))
+            .catch((err) => console.log(err, err.response))
     }
     render() {
-        const { users } = this.state;
+        const { users, isLoading } = this.state;
         const columns = [
             {
                 key: "name",
@@ -81,6 +77,7 @@ class EmployeeIndex extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 <Table
+                                    loading={isLoading}
                                     columns={columns}
                                     data={users}
                                 />

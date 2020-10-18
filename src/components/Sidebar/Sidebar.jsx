@@ -20,7 +20,8 @@ import React from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
-
+import { Avatar } from "antd";
+import user from "user";
 // reactstrap components
 import {
   Button,
@@ -142,12 +143,14 @@ class Sidebar extends React.Component {
             <UncontrolledDropdown nav>
               <DropdownToggle nav>
                 <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={require("assets/img/theme/team-1-800x800.jpg")}
-                    />
-                  </span>
+                  <Avatar style={{ color: '#fff', backgroundColor: '#FF6969' }}>
+                    <b>{(user("username") || "U").toString().toUpperCase().charAt(0)}</b>
+                  </Avatar>
+                  <Media className="ml-2 d-none d-lg-block">
+                    <span className="mb-0 text-sm font-weight-bold">
+                      {user("username")}
+                    </span>
+                  </Media>
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
@@ -174,11 +177,11 @@ class Sidebar extends React.Component {
                   <Col className="collapse-brand" xs="6">
                     {logo.innerLink ? (
                       <Link to={logo.innerLink}>
-                        <img alt={logo.imgAlt} src={logo.imgSrc} />
+                        <h2 className='font-weight-bold text-primary'>Koperasi Simpan Pinjam</h2>
                       </Link>
                     ) : (
                         <a href={logo.outterLink}>
-                          <img alt={logo.imgAlt} src={logo.imgSrc} />
+                          <h2 className='font-weight-bold text-primary'>Koperasi Simpan Pinjam</h2>
                         </a>
                       )}
                   </Col>

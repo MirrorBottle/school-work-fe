@@ -10,20 +10,23 @@ import {
 } from "reactstrap";
 import { Table, OptionalBadge, ActionDropdown } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
+import API from "api";
 class DepositIndex extends React.Component {
     state = {
-        deposits: [
-            {
-                id: 1,
-                employeeName: "Shyna",
-                totalDeposit: "1000000",
-                depositDate: "20-10-2020",
-                status: "Belum Divalidasi"
-            }
-        ]
+        deposits: [],
+        isLoading: true,
+    }
+    componentDidMount() {
+        API()
+            .get('deposit')
+            .then((resp) => this.setState({
+                deposits: resp.data.deposits,
+                isLoading: false
+            }, () => console.log(resp)))
+            .catch((err) => console.log(err, err.response))
     }
     render() {
-        const { deposits } = this.state;
+        const { deposits, isLoading } = this.state;
         const columns = [
             {
                 key: "employeeName",
@@ -96,6 +99,7 @@ class DepositIndex extends React.Component {
                                 <Table
                                     columns={columns}
                                     data={deposits}
+                                    loading={isLoading}
                                 />
                             </CardBody>
                         </Card>

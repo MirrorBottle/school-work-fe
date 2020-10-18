@@ -33,6 +33,7 @@ class Login extends React.Component {
             .post("auth/login", values)
             .then((resp) => {
                 const { status, message, ...data } = resp.data;
+                console.log(data);
                 localStorage.setItem(
                     "auth",
                     btoa(
@@ -67,7 +68,7 @@ class Login extends React.Component {
                             <img
                                 alt="..."
                                 src={require("assets/img/brand/Koperasi-Simpan-Pinjam-Logo.svg")}
-                                style={{ width: "100%", height: "100px" }}
+                                style={{ width: "100%", height: "150px" }}
                             />
                         </div>
                     </Row>

@@ -8,6 +8,9 @@ import DepositIndex from "views/Deposit/DepositIndex";
 import PaymentIndex from "views/Payment/PaymentIndex";
 // Loan
 import LoanIndex from "views/Loan/LoanIndex"
+import LoanCreate from "views/Loan/LoanCreate"
+import LoanEdit from "views/Loan/LoanEdit"
+import LoanDetail from "views/Loan/LoanDetail"
 // User
 import UserIndex from "views/User/UserIndex"
 // Employee
@@ -28,6 +31,27 @@ var routes = [
     component: LoanIndex,
     layout: "/admin",
     isSidemenu: true,
+  },
+  {
+    path: "/loans/create",
+    name: "Tambah Peminjaman",
+    icon: "fas fa-money-check",
+    component: LoanCreate,
+    layout: "/admin",
+  },
+  {
+    path: "/loans/:id",
+    name: "Peminjaman",
+    icon: "fas fa-money-check",
+    component: LoanDetail,
+    layout: "/admin",
+  },
+  {
+    path: "/loans/edit/:id",
+    name: "Peminjaman",
+    icon: "fas fa-money-check",
+    component: LoanEdit,
+    layout: "/admin",
   },
   {
     path: "/payments",
