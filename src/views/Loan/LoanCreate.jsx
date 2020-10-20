@@ -21,7 +21,7 @@ import * as Yup from "yup";
 import moment from "moment";
 import CurrencyInput from "react-currency-input-field"
 import Select from "react-select"
-import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm } from "components/Shared/Shared"
+import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm, Alert } from "components/Shared/Shared"
 import PaymentIndex from 'views/Payment/PaymentIndex';
 import { Link, Redirect, withRouter } from "react-router-dom"
 import { Spin } from "antd";
@@ -51,29 +51,41 @@ class LoanCreate extends Component {
         const totalPaymentInterest = Math.ceil(totalLoan * loanInterest / 100 / paymentCounts);
         const isMonth = paymentMonth >= 1 ? true : false;
         const payment = isMonth ? paymentMonth : paymentDay;
-        console.log(totalLoan * loanInterest / 100 / paymentCounts)
         const payments = [...Array(paymentCounts)].map((val, index) => ({
             totalPayment,
             totalPaymentInterest,
             totalPaymentWithInterest: totalPayment + totalPaymentInterest,
-            dueDate: moment(startDate, "DD-MM-YYYY").add((index + 1) * payment, isMonth ? 'months' : 'days').format("DD-MM-YYYY"),
+            dueDate: moment(startDate, "DD-MM-YYYY").add((index + 1) * payment, isMonth ? 'months' : 'days').format("YYYY-MM-DD HH:mm:ss"),
             roundedTotalPayment: Math.round(totalPayment / 1000) * 1000,
             paymentNumber: index + 1,
             by: `Per ${isMonth ? paymentMonth : paymentDay} ${isMonth ? "Bulan" : "Hari"}`
         }));
-        console.log(payments)
         this.setState({ payments })
     }
     storeData = (data) => {
-        console.log(data);
+        API()
+            .post("loan", data)
+            .then((resp) => {
+                Alert("success", "Tambah Peminjaman", "Tambah peminjaman berhasil!")
+                console.log(resp)
+            })
+            .catch((err) => {
+                Alert("error", "Oops!", "Tambah peminjaman gagal!")
+                console.log(err, err.response)
+            })
+            .finally(() => this.props.history.push("/admin/loans"))
     }
     handleSubmit = (values, actions) => {
         const { payments } = this.state;
         const data = {
             ...values,
+            dueDate: moment(values.dueDate, "DD-MM-YYYY").format("YYYY-MM-DD HH:mm:ss"),
+            startDate: moment(values.startDate, "DD-MM-YYYY").format("YYYY-MM-DD HH:mm:ss"),
             totalLoan: values.totalLoan,
             totalLoanWithInterest: values.totalLoan * values.loanInterest / 100,
             totalPayment: payments.length < 1 ? 0 : payments[0].totalPayment,
+            totalPaymentInterest: payments.length < 1 ? 0 : payments[0].totalPaymentInterest,
+            totalPaymentWithInterest: payments.length < 1 ? 0 : payments[0].totalPaymentWithInterest,
             payments: payments.map(({ by, roundedTotalPayment, ...data }) => ({
                 ...data
             }))
@@ -323,4 +335,4 @@ class LoanCreate extends Component {
     }
 }
 
-export default withFadeIn(LoanCreate)
+export default withRouter(withFadeIn(LoanCreate))
