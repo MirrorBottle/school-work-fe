@@ -4,6 +4,7 @@ import Confirm from "./Confirm";
 import ActionDropdown from "./ActionDropdown"
 import Table from "./Table";
 import Alert from "./Alert";
+import { CurrencyLabel } from "./Label";
 
 const PaymentSelects = [
     {
@@ -31,10 +32,12 @@ const PaymentSelects = [
         label: "48 Kali"
     },
 ]
+
 const InterestSelects = [...Array(11)].map((val, index) => ({
     value: index * 10,
     label: `${index * 10}%`
 }))
+
 export {
     LoadingButton,
     OptionalBadge,
@@ -44,4 +47,5 @@ export {
     InterestSelects,
     ActionDropdown,
     Alert,
+    CurrencyLabel
 };

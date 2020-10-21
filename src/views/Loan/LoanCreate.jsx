@@ -82,7 +82,7 @@ class LoanCreate extends Component {
             dueDate: moment(values.dueDate, "DD-MM-YYYY").format("YYYY-MM-DD HH:mm:ss"),
             startDate: moment(values.startDate, "DD-MM-YYYY").format("YYYY-MM-DD HH:mm:ss"),
             totalLoan: values.totalLoan,
-            totalLoanWithInterest: values.totalLoan * values.loanInterest / 100,
+            totalLoanWithInterest: values.totalLoan + (values.totalLoan * values.loanInterest / 100),
             totalPayment: payments.length < 1 ? 0 : payments[0].totalPayment,
             totalPaymentInterest: payments.length < 1 ? 0 : payments[0].totalPaymentInterest,
             totalPaymentWithInterest: payments.length < 1 ? 0 : payments[0].totalPaymentWithInterest,

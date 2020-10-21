@@ -1,6 +1,6 @@
 import Index from "views/Index";
 import Login from "views/Auth/Login";
-
+import PageNotFound from "views/404";
 
 // Deposit
 import DepositIndex from "views/Deposit/DepositIndex";
@@ -23,6 +23,13 @@ var routes = [
     component: Index,
     layout: "/admin",
     isSidemenu: true,
+  },
+  {
+    path: "/error/404",
+    name: "Error 404 Not Found",
+    icon: "fas fa-laptop",
+    component: PageNotFound,
+    layout: "/admin",
   },
   {
     path: "/loans",
