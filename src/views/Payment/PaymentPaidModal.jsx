@@ -13,17 +13,45 @@ import {
     Form,
 } from "reactstrap";
 import { Formik } from "formik";
-import { LoadingButton, Confirm } from "components/Shared/Shared"
-
+import { LoadingButton, Confirm, Alert } from "components/Shared/Shared"
+import API from "api";
 export default class LoanStatusModal extends Component {
     state = {
         desc: "",
-        isPaid: false,
+        isPaid: true,
         isLoading: false
     }
-    handleSubmit = () => Confirm("Angsuran lunas akan masuk saldo dan tidak dapat diubah lagi").then(() => this.setState({ isLoading: true }, () => {
+    handleSubmit = () => {
+        Confirm("Angsuran lunas akan masuk saldo dan tidak dapat diubah lagi").then(() => this.setState({ isLoading: true }, () => {
+            const { desc, isPaid } = this.state;
+            const { toggle, afterSubmit } = this.props;
+            API()
+                .put(`payment/status/${this.props.payment.id}`, {
+                    status: isPaid ? 1 : 0,
+                    desc
+                })
+                .then(() => Alert("success", "Status Angsuran", "Berhasil mengubah status angsuran"))
+                .catch((err) => {
+                    console.log(err, err.response);
+                    Alert("error", "Oops..!", "Gagal mengubah status angsuran")
+                })
+                .finally(() => {
+                    this.setState({
+                        isLoading: false,
+                        desc: ""
+                    }, () => {
+                        afterSubmit()
+                        toggle()
+                    })
+                })
 
-    })).catch(() => this.toggle());
+        })).catch(() => this.props.toggle());
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            desc: this.props.payment.description
+        })
+    }
     render() {
         const { isOpen, toggle, payment } = this.props;
         const { desc, isLoading, isPaid } = this.state;

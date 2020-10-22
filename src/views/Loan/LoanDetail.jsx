@@ -20,6 +20,7 @@ import API from "api";
 import moment from "moment";
 import Skeleton from "react-loading-skeleton";
 import { Table, OptionalBadge, CurrencyLabel } from "components/Shared/Shared";
+import Swal from "sweetalert2";
 class LoanDetail extends Component {
     state = {
         isLoading: true,
@@ -34,15 +35,43 @@ class LoanDetail extends Component {
             loan: resp.data.loans
         }, () => console.log(resp)))
         .catch((err) => console.log(err, err.response))
-    componentDidMount() {
-        this.getLoanDetailData();
-    }
 
     handlePaymentPaidModalToggle = () => this.setState({ isPaymentPaidModalOpen: !this.state.isPaymentPaidModalOpen })
 
     afterStatusChange = () => this.setState({
         isLoading: true
     }, () => this.getLoanDetailData())
+    handleStatusChange = (status) => {
+        this.setState({ isLoading: true }, () => {
+            API()
+                .put(`loan/status/${this.props.match.params.id}`, { status })
+                .then((resp) => this.getLoanDetailData())
+                .catch((err) => console.log(err, err.response))
+        })
+    }
+    handleValidation = () => Swal.fire({
+        title: "Validasi Peminjaman",
+        text: "Untuk pertama kali, apabila disetujui maka saldo akan dikurangi total peminjaman",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#2DCE89",
+        denyButtonColor: "#F5365C",
+        confirmButtonText: "Setujui!",
+        showDenyButton: true,
+        denyButtonText: "Tolak!",
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.handleStatusChange(1)
+        } else if (result.isDenied) {
+            this.handleStatusChange(2)
+        }
+    });
+
+    componentDidMount() {
+        this.getLoanDetailData();
+    }
 
     render() {
         const { isLoading, loan, selectedPayment, isPaymentPaidModalOpen } = this.state
@@ -66,10 +95,10 @@ class LoanDetail extends Component {
                 render: (text) => <OptionalBadge value={text} />
             },
             {
-                key: "totalPayment",
-                title: "Jumlah Pembayaran",
-                dataIndex: "totalPayment",
-                render: () => <CurrencyLabel>{loan.totalPaymentWithInterest}</CurrencyLabel>
+                key: "description",
+                title: "Keterangan",
+                dataIndex: "description",
+                render: (text) => text === null ? "-" : text
             },
             {
                 key: "action",
@@ -80,7 +109,7 @@ class LoanDetail extends Component {
                         {(record.status === "Belum Lunas" || record.status === "Belum Lunas Terlambat") && (
                             <Button color="success" className="ml-2 mt-1" size="sm" onClick={() => this.setState({
                                 selectedPayment: record
-                            }, () => this.handlePaymentPaidModalToggle())}>
+                            }, () => this.handlePaymentPaidModalToggle())} disabled={this.state.loan.status === "Ditolak" || this.state.loan.status === "Belum Divalidasi"}>
                                 <i className="fas fa-money-bill"></i>
                             </Button>
                         )}
@@ -103,7 +132,7 @@ class LoanDetail extends Component {
         ]
         return (
             <Container className="mt--7" fluid>
-                <PaymentPaidModal payment={selectedPayment} isOpen={isPaymentPaidModalOpen} toggle={this.handlePaymentPaidModalToggle} />
+                <PaymentPaidModal payment={selectedPayment} isOpen={isPaymentPaidModalOpen} toggle={this.handlePaymentPaidModalToggle} afterSubmit={this.afterStatusChange} />
                 <Card className="shadow-lg">
                     <CardHeader className="border-0">
                         <Row>
@@ -119,11 +148,11 @@ class LoanDetail extends Component {
                                     <i className="fas fa-trash-alt mr-2"></i>
                                     Hapus
                                 </Button>
-                                <Button disabled={isLoading} color="primary" onClick={() => this.props.history.push('/admin/loans/create')}>
+                                <Button disabled={isLoading || loan.status === "Lunas" || loan.status === "Belum Lunas"} color="primary" onClick={this.handleValidation}>
                                     <i className="fas fa-check mr-2"></i>
                                     Validasi
                                 </Button>
-                                <Button disabled={isLoading} color="success" onClick={() => this.props.history.push('/admin/loans/create')}>
+                                <Button disabled={isLoading || loan.status === "Ditolak" || loan.payments.filter((payment) => payment.status === "Belum Lunas" || payment.status === "Belum Lunas Terlambat").length > 0} color="success" onClick={() => this.props.history.push('/admin/loans/create')}>
                                     <i className="fas fa-money-bill mr-2"></i>
                                     Lunas
                                 </Button>
@@ -146,7 +175,7 @@ class LoanDetail extends Component {
                             </div>
                             <div className="col-md-3 col-6 mt-2">
                                 <h4 className="text-muted">STATUS</h4>
-                                <h3>{isLoading ? <Skeleton /> : <OptionalBadge value={loan.status} />}</h3>
+                                {isLoading ? <Skeleton /> : <OptionalBadge value={loan.status} />}
                             </div>
                             <div className="col-md-3 col-6 mt-2">
                                 <h4 className="text-muted">TANGGAL PEMINJAMAN</h4>
