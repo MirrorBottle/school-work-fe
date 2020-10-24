@@ -19,7 +19,7 @@ class EmployeeIndex extends React.Component {
     }
     componentDidMount() {
         API()
-            .get('employee')
+            .get('employees')
             .then((resp) => this.setState({
                 users: resp.data.users,
                 isLoading: false
@@ -49,6 +49,11 @@ class EmployeeIndex extends React.Component {
                 key: "phoneNumber",
                 title: "No. Telpon",
                 dataIndex: "phoneNumber",
+            },
+            {
+                key: "role",
+                title: "Hak Akses",
+                dataIndex: "role",
             },
             {
                 key: "action",

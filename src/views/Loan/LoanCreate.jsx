@@ -64,7 +64,7 @@ class LoanCreate extends Component {
     }
     storeData = (data) => {
         API()
-            .post("loan", data)
+            .post("loans", data)
             .then((resp) => {
                 Alert("success", "Tambah Peminjaman", "Tambah peminjaman berhasil!")
                 console.log(resp)
@@ -99,7 +99,7 @@ class LoanCreate extends Component {
         }
     }
     componentDidMount() {
-        API().get("user")
+        API().get("users")
             .then((resp) => this.setState({
                 users: resp.data.users.map((user) => ({
                     value: user.id,

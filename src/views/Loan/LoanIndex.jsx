@@ -20,7 +20,7 @@ class LoanIndex extends React.Component {
     }
     componentDidMount() {
         API()
-            .get("loan")
+            .get("loans")
             .then((resp) => this.setState({
                 isLoading: false,
                 loans: resp.data.loans

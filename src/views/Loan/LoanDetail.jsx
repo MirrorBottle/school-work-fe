@@ -8,10 +8,6 @@ import {
     Button,
     CardBody,
     Badge,
-    UncontrolledButtonDropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
 } from "reactstrap";
 import withFadeIn from "components/HOC/withFadeIn"
 import { withRouter, Link } from "react-router-dom"
@@ -29,7 +25,7 @@ class LoanDetail extends Component {
         selectedPayment: {},
     }
     getLoanDetailData = () => API()
-        .get(`loan/${this.props.match.params.id}`)
+        .get(`loans/${this.props.match.params.id}`)
         .then((resp) => this.setState({
             isLoading: false,
             loan: resp.data.loans
@@ -44,30 +40,12 @@ class LoanDetail extends Component {
     handleStatusChange = (status) => {
         this.setState({ isLoading: true }, () => {
             API()
-                .put(`loan/status/${this.props.match.params.id}`, { status })
+                .put(`loans/status/${this.props.match.params.id}`, { status })
                 .then((resp) => this.getLoanDetailData())
                 .catch((err) => console.log(err, err.response))
         })
     }
-    handleValidation = () => Swal.fire({
-        title: "Validasi Peminjaman",
-        text: "Untuk pertama kali, apabila disetujui maka saldo akan dikurangi total peminjaman",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonText: "Batal",
-        confirmButtonColor: "#2DCE89",
-        denyButtonColor: "#F5365C",
-        confirmButtonText: "Setujui!",
-        showDenyButton: true,
-        denyButtonText: "Tolak!",
-        reverseButtons: true,
-    }).then((result) => {
-        if (result.isConfirmed) {
-            this.handleStatusChange(1)
-        } else if (result.isDenied) {
-            this.handleStatusChange(2)
-        }
-    });
+
 
     componentDidMount() {
         this.getLoanDetailData();

@@ -98,12 +98,12 @@ export default class CustomTable extends Component {
         const tableColumns = this.props.columns.map((column) => {
             const dataIndex = column.dataIndex || "";
             const secondIndex = column.secondIndex || "";
-            if (column.key === "status" || column.key === "isActive") {
+            if (column.key === "status" || column.key === "isActive" || "isFilter" in column) {
                 return { ...column };
             }
-            if("isCurrency" in column) {
+            if ("isCurrency" in column) {
                 return {
-                    ...column, 
+                    ...column,
                     render: (value, record, index) => parseInt(value).toLocaleString('id-ID', {
                         style: 'currency',
                         currency: 'IDR'

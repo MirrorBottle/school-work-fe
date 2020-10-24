@@ -12,6 +12,7 @@ const ActionDropdown = ({
     onDetailClick,
     onEditClick,
     onDeleteClick,
+    onDeleteClickMessage,
     extraItem,
     isActive,
     withoutDelete,
@@ -19,7 +20,7 @@ const ActionDropdown = ({
     withoutEdit,
 }) => {
     const handleDeleteClick = () => {
-        Confirm("Data yang dihapus tidak dapat dipulihkan kembali!").then(
+        Confirm(onDeleteClickMessage || "Data yang dihapus tidak dapat dipulihkan kembali!").then(
             () => onDeleteClick && onDeleteClick()
         );
     };

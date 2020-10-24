@@ -42,14 +42,12 @@ class LoanEdit extends Component {
         console.log(values)
     }
     componentDidMount() {
-        console.log(this.props)
-        const loanQuery = API().get(`loan/${this.props.match.params.id}`);
-        const usersQuery = API().get("user");
+        const loanQuery = API().get(`loans/${this.props.match.params.id}`);
+        const usersQuery = API().get("users");
         axios.all([loanQuery, usersQuery]).then(
             axios.spread((...responses) => {
                 const loanResponse = responses[0];
                 const usersResponse = responses[1];
-                console.log(responses);
                 const {
                     dueDate, startDate, employeeId, paymentCount, userId, totalLoan, loanInterest
                 } = loanResponse.data.loans

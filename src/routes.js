@@ -4,6 +4,9 @@ import PageNotFound from "views/404";
 
 // Deposit
 import DepositIndex from "views/Deposit/DepositIndex";
+import DepositCreate from "views/Deposit/DepositCreate";
+import DepositEdit from "views/Deposit/DepositEdit";
+import DepositDetail from "views/Deposit/DepositDetail";
 // Payment
 import PaymentIndex from "views/Payment/PaymentIndex";
 // Loan
@@ -15,6 +18,8 @@ import LoanDetail from "views/Loan/LoanDetail"
 import UserIndex from "views/User/UserIndex"
 // Employee
 import EmployeeIndex from "views/Employee/EmployeeIndex"
+//Balance
+import BalanceIndex from "views/Balance/BalanceIndex";
 var routes = [
   {
     path: "/index",
@@ -61,10 +66,10 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/payments",
-    name: "Angsuran",
-    icon: "fas fa-money-bill",
-    component: PaymentIndex,
+    path: "/balances",
+    name: "Catatan Saldo",
+    icon: "fas fa-list",
+    component: BalanceIndex,
     layout: "/admin",
     isSidemenu: true,
   },
@@ -91,6 +96,27 @@ var routes = [
     component: DepositIndex,
     layout: "/admin",
     isSidemenu: true,
+  },
+  {
+    path: "/deposits/create",
+    name: "Setoran",
+    icon: "fas fa-database",
+    component: DepositCreate,
+    layout: "/admin",
+  },
+  {
+    path: "/deposits/:id",
+    name: "Setoran",
+    icon: "fas fa-database",
+    component: DepositDetail,
+    layout: "/admin",
+  },
+  {
+    path: "/deposits/edit/:id",
+    name: "Setoran",
+    icon: "fas fa-database",
+    component: DepositEdit,
+    layout: "/admin",
   },
   {
     path: "/login",

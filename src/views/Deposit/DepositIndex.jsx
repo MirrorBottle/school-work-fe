@@ -8,22 +8,40 @@ import {
     Col,
     Button,
 } from "reactstrap";
-import { Table, OptionalBadge, ActionDropdown } from "components/Shared/Shared";
+import { Table, OptionalBadge, ActionDropdown, Confirm, Alert, } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
+import { Link, withRouter } from "react-router-dom";
 import API from "api";
 class DepositIndex extends React.Component {
     state = {
         deposits: [],
         isLoading: true,
     }
-    componentDidMount() {
+    getDepositsData = () => {
         API()
-            .get('deposit')
+            .get('deposits')
             .then((resp) => this.setState({
                 deposits: resp.data.deposits,
                 isLoading: false
             }, () => console.log(resp)))
             .catch((err) => console.log(err, err.response))
+    }
+
+    handleDelete = (id) => {
+        this.setState({ isLoading: true }, () => API()
+            .delete(`deposits/${id}`)
+            .then((resp) => {
+                Alert("success", "Hapus Setoran", "Berhasil menghapus setoran")
+            })
+            .catch((err) => {
+                Alert("error", "Oops..!", "Gagal menghapus setoran")
+                console.log(err, err.response)
+            })
+            .finally(() => this.getDepositsData()))
+
+    }
+    componentDidMount() {
+        this.getDepositsData()
     }
     render() {
         const { deposits, isLoading } = this.state;
@@ -74,7 +92,12 @@ class DepositIndex extends React.Component {
                 key: "action",
                 title: "Aksi",
                 dataIndex: "action",
-                render: () => <ActionDropdown />
+                render: (text, record) => <ActionDropdown
+                    onEditClick={() => this.props.history.push(`/admin/deposits/edit/${record.id}`)}
+                    onDetailClick={() => this.props.history.push(`/admin/deposits/${record.id}`)}
+                    onDeleteClick={() => this.handleDelete(record.id)}
+                    onDeleteClickMessage="Data setoran yang dihapus tidak akan mempengaruhi saldo dan tidak bisa dikembalikan!"
+                />
             }
         ];
         return (
@@ -88,10 +111,12 @@ class DepositIndex extends React.Component {
                                         <h2 className="mb-0">Daftar Setoran</h2>
                                     </Col>
                                     <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
-                                        <Button color="dark">
-                                            <i className="fas fa-plus mr-2"></i>
-                                            Tambah
-                                        </Button>
+                                        <Link to="/admin/deposits/create">
+                                            <Button color="dark">
+                                                <i className="fas fa-plus mr-2"></i>
+                                                Tambah
+                                            </Button>
+                                        </Link>
                                     </Col>
                                 </Row>
                             </CardHeader>
@@ -110,4 +135,4 @@ class DepositIndex extends React.Component {
     }
 }
 
-export default withFadeIn(DepositIndex);
+export default withRouter(withFadeIn(DepositIndex));

@@ -32,7 +32,8 @@
 .footer {
     background: #fff!important;
 }
-.ant-picker.ant-picker-range {
+.ant-picker.ant-picker-range,
+.ant-picker {
     width: 100%;
     min-height: 46px;
     border-radius: 0.375rem;
