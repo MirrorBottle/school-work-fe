@@ -15,7 +15,7 @@ import PaymentPaidModal from "views/Payment/PaymentPaidModal"
 import API from "api";
 import moment from "moment";
 import Skeleton from "react-loading-skeleton";
-import { Table, OptionalBadge, CurrencyLabel } from "components/Shared/Shared";
+import { Table, OptionalBadge, CurrencyLabel, Confirm, Alert } from "components/Shared/Shared";
 import Swal from "sweetalert2";
 class LoanDetail extends Component {
     state = {
@@ -28,7 +28,7 @@ class LoanDetail extends Component {
         .get(`loans/${this.props.match.params.id}`)
         .then((resp) => this.setState({
             isLoading: false,
-            loan: resp.data.loans
+            loan: resp.data.loan
         }, () => console.log(resp)))
         .catch((err) => console.log(err, err.response))
 
@@ -41,12 +41,36 @@ class LoanDetail extends Component {
         this.setState({ isLoading: true }, () => {
             API()
                 .put(`loans/status/${this.props.match.params.id}`, { status })
-                .then((resp) => this.getLoanDetailData())
+                .then((resp) => {
+                    Alert("success", "Status Peminjaman", "Berhasil mengubah status peminjaman")
+                    this.getLoanDetailData();
+                })
                 .catch((err) => console.log(err, err.response))
         })
     }
-
-
+    handleValidation = () => Swal.fire({
+        title: "Validasi Peminjaman",
+        text: "Untuk pertama kali, apabila disetujui maka saldo akan dikurang sesuai dengan total Peminjaman.",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#2DCE89",
+        denyButtonColor: "#F5365C",
+        confirmButtonText: "Setujui!",
+        showDenyButton: true,
+        denyButtonText: "Tolak!",
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.handleStatusChange(1)
+        } else if (result.isDenied) {
+            this.handleStatusChange(2)
+        }
+    });
+    handlePaidClick = () => {
+        Confirm("Peminjaman akan diubah menjadi LUNAS dan tidak bisa diubah!")
+            .then(() => this.handleStatusChange(3))
+    }
     componentDidMount() {
         this.getLoanDetailData();
     }
@@ -130,7 +154,7 @@ class LoanDetail extends Component {
                                     <i className="fas fa-check mr-2"></i>
                                     Validasi
                                 </Button>
-                                <Button disabled={isLoading || loan.status === "Ditolak" || loan.payments.filter((payment) => payment.status === "Belum Lunas" || payment.status === "Belum Lunas Terlambat").length > 0} color="success" onClick={() => this.props.history.push('/admin/loans/create')}>
+                                <Button disabled={isLoading || loan.status === "Ditolak" || loan.status === "Lunas" || loan.payments.filter((payment) => payment.status === "Belum Lunas" || payment.status === "Belum Lunas Terlambat").length > 0} color="success" onClick={this.handlePaidClick}>
                                     <i className="fas fa-money-bill mr-2"></i>
                                     Lunas
                                 </Button>

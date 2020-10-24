@@ -26,7 +26,7 @@ export default class LoanStatusModal extends Component {
             const { desc, isPaid } = this.state;
             const { toggle, afterSubmit } = this.props;
             API()
-                .put(`payment/status/${this.props.payment.id}`, {
+                .put(`payments/status/${this.props.payment.id}`, {
                     status: isPaid ? 1 : 0,
                     desc
                 })
