@@ -16,9 +16,8 @@
 
 */
 import React from "react";
-import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar, Pie } from "react-chartjs-2";
 // reactstrap components
 import {
   Button,
@@ -34,89 +33,121 @@ import {
   Row,
   Col
 } from "reactstrap";
-import withFadeIn from "components/HOC/withFadeIn"
-// core components
+import FadeIn from 'react-fade-in';
 import {
   chartOptions,
   parseOptions,
   chartExample1,
   chartExample2
 } from "variables/charts.js";
+import DashboardHeader from "components/Headers/DashboardHeader";
 
+// core components
+import API from "api";
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeNav: 1,
-      chartExample1Data: "data1"
+      chartExample1Data: "data1",
+      isLoading: true,
+      infographics: {},
+      graphics: {
+        lineData: [...Array(12)].map(() => 0),
+        pieData: [0, 0, 0, 0]
+      }
     };
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
   }
-  toggleNavs = (e, index) => {
-    e.preventDefault();
-    this.setState({
-      activeNav: index,
-      chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1"
-    });
-  };
+  componentDidMount() {
+    API().get("dashboard")
+      .then(({ data }) => {
+        const { infographics, graphics } = data;
+        this.setState({
+          isLoading: false, infographics, graphics
+        })
+      })
+      .catch((err) => console.log(err, err.response))
+  }
   render() {
+    const { isLoading, graphics, infographics } = this.state;
+    const LineChartData = {
+      labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+      datasets: [
+        {
+          label: 'Peminjaman',
+          data: graphics.lineData,
+          fill: true,
+          backgroundColor: 'rgba(91, 89, 197, .3)',
+          borderColor: '#5E72E4',
+        },
+      ],
+    }
+    const BarChartData = {
+      labels: ['Lunas', 'Belum Lunas', 'Belum Divalidasi', 'Ditolak'],
+      datasets: [
+        {
+          label: '# of Votes',
+          data: graphics.pieData,
+          backgroundColor: [
+            'rgba(255, 99, 132,1)',
+            'rgba(54, 162, 235,1)',
+            'rgba(255, 206, 86,1)',
+            'rgba(75, 192, 192,1)',
+          ],
+          borderWidth: 1,
+        },
+      ],
+    }
     return (
-      <Container className="mt--7" fluid>
-        <Row>
-          <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-gradient-default shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
-                      </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
-                  </div>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Line
-                    data={chartExample1[this.state.chartExample1Data]}
-                    options={chartExample1.options}
-                    getDatasetAtEvent={e => console.log(e)}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Performance
-                      </h6>
-                    <h2 className="mb-0">Total orders</h2>
-                  </div>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Bar
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+      <React.Fragment>
+        <DashboardHeader isLoading={isLoading} infographics={infographics} />
+        <Container className="mt--7" fluid>
+          <FadeIn transitionDuration={200} delay={50}>
+            <Row>
+              <Col className="mb-5 mb-xl-0" xl="12">
+                <Card className="shadow">
+                  <CardHeader className="bg-transparent">
+                    <Row className="align-items-center">
+                      <div className="col">
+                        <h2 className="mb-0">Peminjaman Tahun Ini</h2>
+                      </div>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <Row>
+                      <div className="col-md-8 col-xl-8 col-12">
+                        <h3>Jumlah Peminjaman</h3>
+                        <Line data={LineChartData} options={{
+                          legend: {
+                            display: false,
+                          },
+                        }} />
+                      </div>
+                      <div className="col-md-4 col-xl-4 col-12">
+                        <h3>Status Peminjaman</h3>
+                        <div className="h-100 d-flex align-items-center">
+                          <Pie
+                            data={BarChartData}
+                            options={{
+                              legend: {
+                                display: false,
+                              },
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+
+            </Row>
+          </FadeIn>
+
+        </Container>
+      </React.Fragment>
     );
   }
 }
 
-export default withFadeIn(Index);
+export default Index;

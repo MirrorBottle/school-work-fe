@@ -113,6 +113,15 @@ class BalanceIndex extends Component {
                 title: "Waktu Perubahan",
                 dataIndex: "changedAt",
                 render: (text) => moment(text, "YYYY-MM-DD HH:mm:ss").format("DD-MM-YYYY HH:mm:ss")
+            },
+            {
+                key: "action",
+                title: "Aksi",
+                dataIndex: "action",
+                render: (text, record, index) => <Button size="sm" color="danger" disabled={index === 0}>
+                    <i className="fas fa-trash-alt mr-2"></i>
+                    Hapus
+                </Button>
             }
         ];
         return (

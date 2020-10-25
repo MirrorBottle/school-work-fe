@@ -38,6 +38,7 @@
     "react": "^16.13.1",
     "react-chartjs-2": "^2.9.0",
     "react-copy-to-clipboard": "5.0.2",
+    "react-countup": "^4.3.3",
     "react-currency-input": "^1.3.6",
     "react-currency-input-field": "^2.3.3",
     "react-datetime": "2.16.3",
