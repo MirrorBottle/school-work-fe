@@ -34,12 +34,6 @@ import {
   Col
 } from "reactstrap";
 import FadeIn from 'react-fade-in';
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from "variables/charts.js";
 import DashboardHeader from "components/Headers/DashboardHeader";
 
 // core components
@@ -82,17 +76,17 @@ class Index extends React.Component {
         },
       ],
     }
-    const BarChartData = {
+    const PieChartData = {
       labels: ['Lunas', 'Belum Lunas', 'Belum Divalidasi', 'Ditolak'],
       datasets: [
         {
           label: '# of Votes',
           data: graphics.pieData,
           backgroundColor: [
-            'rgba(255, 99, 132,1)',
-            'rgba(54, 162, 235,1)',
-            'rgba(255, 206, 86,1)',
-            'rgba(75, 192, 192,1)',
+            '#2DCE89',
+            '#F5365C',
+            '#5E72E4',
+            '#FB6340',
           ],
           borderWidth: 1,
         },
@@ -118,8 +112,15 @@ class Index extends React.Component {
                       <div className="col-md-8 col-xl-8 col-12">
                         <h3>Jumlah Peminjaman</h3>
                         <Line data={LineChartData} options={{
+                          bezierCurve: false,
+                          elements: {
+                            line: {
+                              tension: 0
+                            }
+                          },
                           legend: {
                             display: false,
+
                           },
                         }} />
                       </div>
@@ -127,7 +128,7 @@ class Index extends React.Component {
                         <h3>Status Peminjaman</h3>
                         <div className="h-100 d-flex align-items-center">
                           <Pie
-                            data={BarChartData}
+                            data={PieChartData}
                             options={{
                               legend: {
                                 display: false,

@@ -10,6 +10,7 @@ import {
 } from "reactstrap";
 import { Table, ActionDropdown } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
+import { withRouter } from "react-router-dom";
 import moment from "moment";
 import API from "api";
 class UserIndex extends React.Component {
@@ -22,7 +23,7 @@ class UserIndex extends React.Component {
             .then((resp) => this.setState({
                 users: resp.data.users,
                 isLoading: false
-            }, () => console.log(resp, this.state)))
+            }))
             .catch((err) => console.log(err, err.response))
     }
     render() {
@@ -59,7 +60,9 @@ class UserIndex extends React.Component {
                 key: "action",
                 title: "Aksi",
                 dataIndex: "action",
-                render: () => <ActionDropdown />
+                render: (text, record) => <ActionDropdown
+                    onEditClick={() => this.props.history.push(`/admin/users/edit/user/${record.id}`)}
+                />
             }
         ];
         return (
@@ -73,7 +76,7 @@ class UserIndex extends React.Component {
                                         <h2 className="mb-0">Daftar Pengguna</h2>
                                     </Col>
                                     <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
-                                        <Button color="dark">
+                                        <Button color="dark" onClick={() => this.props.history.push("/admin/users/create/user")}>
                                             <i className="fas fa-plus mr-2"></i>
                                             Tambah
                                         </Button>
@@ -95,4 +98,4 @@ class UserIndex extends React.Component {
     }
 }
 
-export default withFadeIn(UserIndex);
+export default withRouter(withFadeIn(UserIndex));

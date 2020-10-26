@@ -16,6 +16,8 @@ import LoanEdit from "views/Loan/LoanEdit"
 import LoanDetail from "views/Loan/LoanDetail"
 // User
 import UserIndex from "views/User/UserIndex"
+import UserCreate from "views/User/UserCreate"
+import UserEdit from "views/User/UserEdit"
 // Employee
 import EmployeeIndex from "views/Employee/EmployeeIndex"
 //Balance
@@ -74,7 +76,7 @@ var routes = [
     isSidemenu: true,
   },
   {
-    path: "/members",
+    path: "/employees",
     name: "Pegawai",
     icon: "fas fa-user-tie",
     component: EmployeeIndex,
@@ -88,6 +90,21 @@ var routes = [
     component: UserIndex,
     layout: "/admin",
     isSidemenu: true,
+  },
+
+  {
+    path: "/users/create/:type",
+    name: "Pengguna",
+    icon: "fas fa-user",
+    component: UserCreate,
+    layout: "/admin",
+  },
+  {
+    path: "/users/edit/:type/:id",
+    name: "Pengguna",
+    icon: "fas fa-user",
+    component: UserEdit,
+    layout: "/admin",
   },
   {
     path: "/deposits",

@@ -10,6 +10,7 @@ import {
 } from "reactstrap";
 import { Table, ActionDropdown } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
+import { withRouter } from "react-router-dom";
 import moment from "moment";
 import API from "api"
 class EmployeeIndex extends React.Component {
@@ -38,7 +39,6 @@ class EmployeeIndex extends React.Component {
                 key: "gender",
                 title: "Jenis Kelamin",
                 dataIndex: "gender",
-                render: (text) => text === "0" ? "Perempuan" : "Laki-laki"
             },
             {
                 key: "email",
@@ -59,7 +59,10 @@ class EmployeeIndex extends React.Component {
                 key: "action",
                 title: "Aksi",
                 dataIndex: "action",
-                render: () => <ActionDropdown />
+                render: (text, record) => <ActionDropdown
+                    onEditClick={() => this.props.history.push(`/admin/users/edit/employee/${record.id}`)}
+
+                />
             }
         ];
         return (
@@ -73,7 +76,7 @@ class EmployeeIndex extends React.Component {
                                         <h2 className="mb-0">Daftar Pegawai</h2>
                                     </Col>
                                     <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
-                                        <Button color="dark">
+                                        <Button color="dark" onClick={() => this.props.history.push("/admin/users/create/employee")}>
                                             <i className="fas fa-plus mr-2"></i>
                                             Tambah
                                         </Button>
@@ -95,4 +98,4 @@ class EmployeeIndex extends React.Component {
     }
 }
 
-export default withFadeIn(EmployeeIndex);
+export default withRouter(withFadeIn(EmployeeIndex));

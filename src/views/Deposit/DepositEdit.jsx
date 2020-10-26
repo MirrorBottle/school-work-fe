@@ -56,7 +56,6 @@ class DepositEdit extends Component {
             }))
     }
     handleSubmit = (values) => {
-        console.log(values);
         API()
             .put(`deposits/${this.props.match.params.id}`, {
                 ...values,
