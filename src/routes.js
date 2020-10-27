@@ -24,6 +24,8 @@ import EmployeeIndex from "views/Employee/EmployeeIndex"
 import BalanceIndex from "views/Balance/BalanceIndex";
 // Profile
 import Profile from "views/Profile/Profile";
+// Report
+import Report from "views/Report";
 var routes = [
   {
     path: "/index",
@@ -143,6 +145,14 @@ var routes = [
     icon: "fas fa-database",
     component: DepositEdit,
     layout: "/admin",
+  },
+  {
+    path: "/report",
+    name: "Laporan",
+    icon: "fas fa-chart-bar",
+    component: Report,
+    layout: "/admin",
+    isSidemenu: true
   },
   {
     path: "/login",
