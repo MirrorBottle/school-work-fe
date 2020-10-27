@@ -60,7 +60,7 @@ export default class LoanStatusModal extends Component {
                 <ModalHeader toggle={toggle}>Perubahan Angsuran</ModalHeader>
                 <ModalBody>
                     <Row>
-                        {(payment.status === "Lunas" || payment.status === "Lunas Terlambat") && (
+                        {payment.paymentDate !== null && (
                             <React.Fragment>
                                 <Col md={{ size: 6 }}>
                                     <Button
