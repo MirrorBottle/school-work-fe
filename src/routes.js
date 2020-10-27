@@ -22,6 +22,8 @@ import UserEdit from "views/User/UserEdit"
 import EmployeeIndex from "views/Employee/EmployeeIndex"
 //Balance
 import BalanceIndex from "views/Balance/BalanceIndex";
+// Profile
+import Profile from "views/Profile/Profile";
 var routes = [
   {
     path: "/index",
@@ -36,6 +38,13 @@ var routes = [
     name: "Error 404 Not Found",
     icon: "fas fa-laptop",
     component: PageNotFound,
+    layout: "/admin",
+  },
+  {
+    path: "/profile",
+    name: "Profil",
+    icon: "fas fa-laptop",
+    component: Profile,
     layout: "/admin",
   },
   {
