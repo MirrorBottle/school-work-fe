@@ -8,7 +8,7 @@ import {
     Col,
     Button,
 } from "reactstrap";
-import { Table, OptionalBadge, ActionDropdown } from "components/Shared/Shared";
+import { Table, OptionalBadge, ActionDropdown, Confirm, Alert } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import { Link } from "react-router-dom";
 import API from "api";
@@ -18,7 +18,7 @@ class BalanceIndex extends Component {
         balances: [],
         isLoading: true,
     }
-    componentDidMount() {
+    getBalancesData = () => {
         API()
             .get('balances')
             .then((resp) => this.setState({
@@ -26,6 +26,19 @@ class BalanceIndex extends Component {
                 isLoading: false
             }, () => console.log(resp)))
             .catch((err) => console.log(err, err.response))
+    }
+    handleDelete = (id) => {
+        Confirm("Catatan saldo tidak akan bisa dikembalikan lagi!").then(() => this.setState({ isLoading: true }, () => API()
+            .delete(`balances/${id}`)
+            .then((resp) => {
+                Alert("success", "Hapus Catatan Saldo", "Berhasil menghapus catatan saldo")
+            })
+            .catch((err) => Alert("error", "Hapus Catatan Saldo", "Gagal menghapus catatan saldo"))
+            .finally(() => this.getBalancesData())
+        ))
+    }
+    componentDidMount() {
+        this.getBalancesData();
     }
     render() {
         const { balances, isLoading } = this.state;
@@ -118,7 +131,7 @@ class BalanceIndex extends Component {
                 key: "action",
                 title: "Aksi",
                 dataIndex: "action",
-                render: (text, record, index) => <Button size="sm" color="danger" disabled={index === 0}>
+                render: (text, record, index) => <Button size="sm" onClick={() => this.handleDelete(record.id)} color="danger" disabled={index === 0}>
                     <i className="fas fa-trash-alt mr-2"></i>
                     Hapus
                 </Button>
@@ -134,14 +147,14 @@ class BalanceIndex extends Component {
                                     <Col md="4" xs="4" sm="12" >
                                         <h2 className="mb-0">Catatan Saldo</h2>
                                     </Col>
-                                    <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
-                                        <Link to="/admin/deposits/create">
+                                    {/* <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
+                                        <Link to="/admin/balances/create">
                                             <Button color="dark">
                                                 <i className="fas fa-plus mr-2"></i>
                                                 Tambah
                                             </Button>
                                         </Link>
-                                    </Col>
+                                    </Col> */}
                                 </Row>
                             </CardHeader>
                             <CardBody>

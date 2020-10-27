@@ -22,6 +22,7 @@ import UserEdit from "views/User/UserEdit"
 import EmployeeIndex from "views/Employee/EmployeeIndex"
 //Balance
 import BalanceIndex from "views/Balance/BalanceIndex";
+import BalanceCreate from "views/Balance/BalanceCreate";
 // Profile
 import Profile from "views/Profile/Profile";
 // Report
@@ -85,6 +86,13 @@ var routes = [
     component: BalanceIndex,
     layout: "/admin",
     isSidemenu: true,
+  },
+  {
+    path: "/balances/create",
+    name: "Catatan Saldo",
+    icon: "fas fa-list",
+    component: BalanceCreate,
+    layout: "/admin",
   },
   {
     path: "/employees",
