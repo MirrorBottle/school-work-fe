@@ -63,6 +63,7 @@ class UserIndex extends React.Component {
                 dataIndex: "action",
                 render: (text, record) => <ActionDropdown
                     onEditClick={() => this.props.history.push(`/admin/users/edit/user/${record.id}`)}
+                    onDetailClick={() => this.props.history.push(`/admin/users/${record.id}`)}
                 />
             }
         ];

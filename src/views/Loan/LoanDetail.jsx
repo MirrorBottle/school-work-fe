@@ -223,7 +223,7 @@ class LoanDetail extends Component {
                                 <h3 className="text-danger">{isLoading ? <Skeleton /> : loan.dueDate}</h3>
                             </div>
                             <div className="col-md-3 col-6 mt-2">
-                                <h4 className="text-muted">TANGGAL PEMBAYARAN</h4>
+                                <h4 className="text-muted">TANGGAL PEMBAYARAN/LUNAS</h4>
                                 <h3 className="text-success">{isLoading ? <Skeleton /> : (loan.paidDate !== null ? loan.paidDate : "-")}</h3>
                             </div>
                             <div className="col-md-3 col-6 mt-2">

@@ -18,6 +18,7 @@ import LoanDetail from "views/Loan/LoanDetail"
 import UserIndex from "views/User/UserIndex"
 import UserCreate from "views/User/UserCreate"
 import UserEdit from "views/User/UserEdit"
+import UserDetail from "views/User/UserDetail"
 // Employee
 import EmployeeIndex from "views/Employee/EmployeeIndex"
 //Balance
@@ -116,6 +117,13 @@ var routes = [
     name: "Pengguna",
     icon: "fas fa-user",
     component: UserCreate,
+    layout: "/admin",
+  },
+  {
+    path: "/users/:id",
+    name: "Pengguna",
+    icon: "fas fa-user",
+    component: UserDetail,
     layout: "/admin",
   },
   {
