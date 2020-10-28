@@ -125,19 +125,19 @@ class LoanCreate extends Component {
             },
             {
                 key: "totalPayment",
-                title: "Jumlah Pembayaran",
+                title: "Angsuran Pokok",
                 dataIndex: "totalPayment",
                 isCurrency: true,
             },
             {
                 key: "totalPaymentInterest",
-                title: "Bunga Per Pembayaran",
+                title: "Bunga Per Angsuran",
                 dataIndex: "totalPaymentInterest",
                 isCurrency: true,
             },
             {
                 key: "totalPaymentWithInterest",
-                title: "Pembayaran Total",
+                title: "Total Angsuran",
                 dataIndex: "totalPaymentWithInterest",
                 isCurrency: true,
             },

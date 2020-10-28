@@ -61,7 +61,7 @@ class EmployeeIndex extends React.Component {
                 dataIndex: "action",
                 render: (text, record) => <ActionDropdown
                     onEditClick={() => this.props.history.push(`/admin/users/edit/employee/${record.id}`)}
-
+                    onDetailClick={() => this.props.history.push(`/admin/employees/${record.id}`)}
                 />
             }
         ];

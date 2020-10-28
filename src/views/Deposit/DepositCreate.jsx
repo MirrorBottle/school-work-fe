@@ -76,7 +76,7 @@ class DepositCreate extends Component {
                 Alert("error", "Oops!", "Tambah setoran gagal!")
                 console.log(err, err.response)
             })
-            .finally(() => this.props.history.push("/admin/deposits"))
+            .finally(() => this.props.history.push(`/admin/${user("role") === "admin" ? 'deposits' : 'profile'}`))
     }
     render() {
         const { users, isLoading } = this.state;

@@ -20,14 +20,14 @@ import Skeleton from "react-loading-skeleton";
 import { Table, OptionalBadge, Confirm, Alert } from "components/Shared/Shared";
 import Swal from "sweetalert2";
 
-class UserDetail extends Component {
+class EmployeeDetail extends Component {
     state = {
         isLoading: true,
         user: {}
     }
-    getUserDetailData = () => {
+    getEmployeeDetailData = () => {
         API()
-            .get(`users/${this.props.match.params.id}`)
+            .get(`employees/${this.props.match.params.id}`)
             .then((resp) => this.setState({
                 isLoading: false,
                 user: resp.data.user
@@ -35,25 +35,25 @@ class UserDetail extends Component {
             .catch((err) => console.log(err, err.response))
     }
     handleDelete = () => {
-        Confirm("Data pengguna yang sudah memiliki relasi akan diminta konfirmasi kembali apabila benar-benar ingin dihapus").then(() => this.setState({ isLoading: true }, () => {
-            API().delete(`users/${this.props.match.params.id}`)
+        Confirm("Data pegawai yang sudah memiliki relasi akan diminta konfirmasi kembali apabila benar-benar ingin dihapus").then(() => this.setState({ isLoading: true }, () => {
+            API().delete(`employees/${this.props.match.params.id}`)
                 .then((resp) => {
-                    Alert("success", "Hapus Pengguna", "Berhasil menghapus pengguna")
-                    this.props.history.push('/admin/users')
+                    Alert("success", "Hapus Pegawai", "Berhasil menghapus pegawai")
+                    this.props.history.push('/admin/employees')
                 })
                 .catch((err) => {
                     if (err.response.status === 403) {
-                        Confirm("Pengguna sudah membuat peminjaman, apakah anda yakin ingin menghapus data pengguna dan semua peminjaman baik lunas maupun belum?")
+                        Confirm("Pegawai sudah melakukan setoran, apakah anda yakin ingin menghapus data pegawai dan semua setoran?")
                             .then(() => API().delete(`users/${this.props.match.params.id}/force`)
-                                .then((resp) => Alert("success", "Hapus Pengguna", "Berhasil menghapus pengguna"))
+                                .then((resp) => Alert("success", "Hapus Pegawai", "Berhasil menghapus pegawai"))
                                 .catch((err) => {
-                                    Alert("error", "Hapus Pengguna", "Gagal menghapus pengguna");
+                                    Alert("error", "Hapus Pegawai", "Gagal menghapus pegawai");
                                     console.log(err, err.response)
                                 })
-                                .finally(() => this.props.history.push('/admin/users'))
+                                .finally(() => this.props.history.push('/admin/employees'))
                             )
                     } else {
-                        Alert("error", "Hapus Pengguna", "Gagal menghapus pengguna");
+                        Alert("error", "Hapus Pegawai", "Gagal menghapus pegawai");
                         console.log(err, err.response)
                     }
                 })
@@ -61,38 +61,24 @@ class UserDetail extends Component {
     }
 
     componentDidMount() {
-        this.getUserDetailData()
+        this.getEmployeeDetailData()
     }
     render() {
         const { isLoading, user } = this.state;
         const columns = [
             {
-                key: "startDate",
-                title: "Tanggal Peminjaman",
-                dataIndex: "startDate",
+                key: "depositDate",
+                title: "Tanggal Setoran",
+                dataIndex: "depositDate",
             },
             {
-                key: "dueDate",
-                title: "Tanggal Jatuh Tempo",
-                dataIndex: "dueDate",
-            },
-            {
-                key: "paidDate",
-                title: "Tanggal Pembayaran/Lunas",
-                dataIndex: "paidDate",
-                render: (text) => text === null ? "-" : text
-            },
-            {
-                key: "totalLoan",
-                title: "Total Pinjaman",
-                dataIndex: "totalLoan",
-                isCurrency: true,
-            },
-            {
-                key: "paymentCount",
-                title: "Total Angsuran",
-                dataIndex: "paymentCount",
-                render: (text) => `${text} Kali`
+                key: "totalDeposit",
+                title: "Total Setoran",
+                dataIndex: "totalDeposit",
+                render: (text) => parseInt(text).toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                })
             },
             {
                 title: "Status",
@@ -104,12 +90,8 @@ class UserDetail extends Component {
                         value: "Belum Divalidasi",
                     },
                     {
-                        text: "Lunas",
-                        value: "Lunas",
-                    },
-                    {
-                        text: "Belum Lunas",
-                        value: "Belum Lunas",
+                        text: "Disetujui",
+                        value: "Disetujui",
                     },
                     {
                         text: "Ditolak",
@@ -121,13 +103,12 @@ class UserDetail extends Component {
                 },
                 render: (status) => <OptionalBadge value={status} />
             },
-
             {
                 key: "action",
                 title: "Aksi",
                 dataIndex: "action",
                 render: (value, record) => (
-                    <Button size="sm" color="primary" onClick={() => this.props.history.push(`/admin/loans/${record.id}`)}>
+                    <Button size="sm" color="primary" onClick={() => this.props.history.push(`/admin/payments/${record.id}`)}>
                         <i className="fas fa-eye mr-2"></i>
                         Detail
                     </Button>
@@ -140,7 +121,7 @@ class UserDetail extends Component {
                     <CardHeader className="border-0">
                         <Row>
                             <Col md="9" xs="12" sm="12">
-                                <h1 className="mb-0">Detail Pengguna</h1>
+                                <h1 className="mb-0">Detail Pegawai</h1>
                             </Col>
                             <Col md="3" xs="12" sm="12" className="d-flex justify-content-start mt-2">
                                 <Button disabled={isLoading} color="warning" onClick={() => this.props.history.push(`/admin/users/edit/user/${user.id}`)}>
@@ -193,13 +174,13 @@ class UserDetail extends Component {
                 </Card>
                 <Card className="shadow-lg mt-4">
                     <CardHeader className="border-0">
-                        <h2 className="mb-0">Riwayat Peminjaman</h2>
+                        <h2 className="mb-0">Riwayat Setoran</h2>
                     </CardHeader>
                     <CardBody>
                         <Table
                             loading={isLoading}
                             columns={columns}
-                            data={user.loans}
+                            data={user.deposits}
                         />
                     </CardBody>
                 </Card>
@@ -207,4 +188,4 @@ class UserDetail extends Component {
         )
     }
 }
-export default withRouter(withFadeIn(UserDetail))
+export default withRouter(withFadeIn(EmployeeDetail))

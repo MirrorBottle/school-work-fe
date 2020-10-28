@@ -24,7 +24,7 @@ import * as Yup from "yup";
 import moment from "moment";
 import CurrencyInput from "react-currency-input-field"
 import Select from "react-select"
-import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm, Alert } from "components/Shared/Shared"
+import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm, Alert, OptionalBadge } from "components/Shared/Shared"
 import PaymentIndex from 'views/Payment/PaymentIndex';
 import { Link, Redirect, withRouter } from "react-router-dom"
 import { Spin } from "antd";
@@ -59,7 +59,7 @@ class Profile extends Component {
             .finally(() => this.props.history.push(`/admin/profile`))
     }
     componentDidMount() {
-        API().get(`users/${user('id')}`)
+        API().get(`${user("role") === "Pegawai" ? "employees" : "users"}/${user('id')}`)
             .then((resp) => this.setState({
                 user: resp.data.user,
                 isLoading: false
@@ -68,11 +68,87 @@ class Profile extends Component {
     }
     render() {
         const { isLoading, user, isChangePasswordModalOpen } = this.state;
-        const isEmployee = this.props.match.params.type === "employee";
+        console.log(user);
         const { id, deposits, loans, ...initialValues } = user;
+        const DepositColumns = [
+            {
+                key: "depositDate",
+                title: "Tanggal Setoran",
+                dataIndex: "depositDate",
+            },
+            {
+                key: "totalDeposit",
+                title: "Total Setoran",
+                dataIndex: "totalDeposit",
+                render: (text) => parseInt(text).toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                })
+            },
+            {
+                title: "Status",
+                key: "status",
+                dataIndex: "status",
+                filters: [
+                    {
+                        text: "Belum Divalidasi",
+                        value: "Belum Divalidasi",
+                    },
+                    {
+                        text: "Disetujui",
+                        value: "Disetujui",
+                    },
+                    {
+                        text: "Ditolak",
+                        value: "Ditolak",
+                    },
+                ],
+                onFilter: (value, record) => {
+                    return value === record.status;
+                },
+                render: (status) => <OptionalBadge value={status} />
+            },
+            {
+                key: "action",
+                title: "Aksi",
+                dataIndex: "action",
+                render: (value, record) => (
+                    <Button size="sm" color="primary" onClick={() => this.props.history.push(`/admin/payments/${record.id}`)}>
+                        <i className="fas fa-eye mr-2"></i>
+                        Detail
+                    </Button>
+                )
+            }
+        ];
         return (
             <Container className="mt--7" fluid>
                 <ProfileChangePassword isOpen={isChangePasswordModalOpen} toggle={this.togglePasswordModal} />
+                {user("role") === "Pegawai" && (
+                    <Card className="shadow-lg mb-4">
+                        <CardHeader className="border-0">
+                            <Row>
+                                <Col md="4" xs="4" sm="12" >
+                                    <h2 className="mb-0">Riwayat Setoran</h2>
+                                </Col>
+                                <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
+                                    <Link to="/admin/deposits/create">
+                                        <Button color="primary">
+                                            <i className="fas fa-plus mr-2"></i>
+                                        Ajukan Setoran
+                                    </Button>
+                                    </Link>
+                                </Col>
+                            </Row>
+                        </CardHeader>
+                        <CardBody>
+                            <Table
+                                loading={isLoading}
+                                columns={DepositColumns}
+                                data={deposits}
+                            />
+                        </CardBody>
+                    </Card>
+                )}
                 <Formik
                     initialValues={{
                         ...initialValues,
@@ -235,15 +311,6 @@ class Profile extends Component {
                                                 </FormFeedback>
                                             ) : null}
                                         </FormGroup>
-                                        {isEmployee && (
-                                            <FormGroup>
-                                                <Label for="role">Hak Akses</Label>
-                                                <CustomInput disabled={isSubmitting} value={values.role} type="select" id="role" name="role" onChange={handleChange}>
-                                                    <option value={2}>Pegawai</option>
-                                                    <option value={1}>Admin</option>
-                                                </CustomInput>
-                                            </FormGroup>
-                                        )}
                                     </Spin>
                                 </CardBody>
                             </Card>

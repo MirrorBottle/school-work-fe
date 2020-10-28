@@ -35,9 +35,11 @@ import {
 } from "reactstrap";
 import FadeIn from 'react-fade-in';
 import DashboardHeader from "components/Headers/DashboardHeader";
-
+import UserDashboard from "views/Dashboard/UserDashboard"
+import AdminDashboard from "views/Dashboard/AdminDashboard"
 // core components
 import API from "api";
+import user from "user";
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -92,62 +94,7 @@ class Index extends React.Component {
         },
       ],
     }
-    return (
-      <React.Fragment>
-        <DashboardHeader isLoading={isLoading} infographics={infographics} />
-        <Container className="mt--7" fluid>
-          <FadeIn transitionDuration={200} delay={50}>
-            <Row>
-              <Col className="mb-5 mb-xl-0" xl="12">
-                <Card className="shadow">
-                  <CardHeader className="bg-transparent">
-                    <Row className="align-items-center">
-                      <div className="col">
-                        <h2 className="mb-0">Peminjaman Tahun Ini</h2>
-                      </div>
-                    </Row>
-                  </CardHeader>
-                  <CardBody>
-                    <Row>
-                      <div className="col-md-8 col-xl-8 col-12">
-                        <h3>Jumlah Peminjaman</h3>
-                        <Line data={LineChartData} options={{
-                          bezierCurve: false,
-                          elements: {
-                            line: {
-                              tension: 0
-                            }
-                          },
-                          legend: {
-                            display: false,
-
-                          },
-                        }} />
-                      </div>
-                      <div className="col-md-4 col-xl-4 col-12">
-                        <h3>Status Peminjaman</h3>
-                        <div className="h-100 d-flex align-items-center">
-                          <Pie
-                            data={PieChartData}
-                            options={{
-                              legend: {
-                                display: false,
-                              },
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-
-            </Row>
-          </FadeIn>
-
-        </Container>
-      </React.Fragment>
-    );
+    return user("role") === "Pengguna" ? <UserDashboard /> : <AdminDashboard />
   }
 }
 

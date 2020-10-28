@@ -27,7 +27,7 @@ import Select from "react-select"
 import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm, Alert } from "components/Shared/Shared"
 import PaymentIndex from 'views/Payment/PaymentIndex';
 import { Link, Redirect, withRouter } from "react-router-dom"
-import { Spin } from "antd";
+import { Spin, Input as AntdInput } from "antd";
 import API from "api";
 import user from "user";
 
@@ -36,6 +36,7 @@ export const UserFormSchema = Yup.object().shape({
     gender: Yup.string().required("Kelamin wajib dipilih!"),
     email: Yup.string().email("Email harus valid!").required("Email wajib diisi!"),
     phoneNumber: Yup.string().required("Nomor telpon wajib diisi!"),
+    password: Yup.string().required("Password wajib diisi!"),
     joinDate: Yup.string().required("Tanggal bergabung wajib dipilih!"),
     dateOfBirth: Yup.string().required("Tanggal lahir wajib dipilih!"),
     address: Yup.string().required("Alamat wajib diisi!"),
@@ -72,6 +73,7 @@ class UserCreate extends Component {
                         dateOfBirth: "",
                         address: "",
                         job: "",
+                        password: "",
                         role: 2,
                     }}
                     onSubmit={this.handleSubmit}
@@ -105,6 +107,23 @@ class UserCreate extends Component {
                                         {errors.name && touched.name ? (
                                             <FormFeedback className="d-block mt-1">
                                                 {errors.name}
+                                            </FormFeedback>
+                                        ) : null}
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label htmlFor="password">
+                                            <h3>Password</h3>
+                                        </Label>
+                                        <AntdInput.Password
+                                            name="password"
+                                            id="password"
+                                            placeholder="Masukkan Password Default"
+                                            onChange={handleChange}
+                                            disabled={isSubmitting}
+                                        />
+                                        {errors.password && touched.password ? (
+                                            <FormFeedback className="d-block mt-1">
+                                                {errors.password}
                                             </FormFeedback>
                                         ) : null}
                                     </FormGroup>

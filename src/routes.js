@@ -21,6 +21,7 @@ import UserEdit from "views/User/UserEdit"
 import UserDetail from "views/User/UserDetail"
 // Employee
 import EmployeeIndex from "views/Employee/EmployeeIndex"
+import EmployeeDetail from "views/Employee/EmployeeDetail"
 //Balance
 import BalanceIndex from "views/Balance/BalanceIndex";
 import BalanceCreate from "views/Balance/BalanceCreate";
@@ -36,6 +37,7 @@ var routes = [
     component: Index,
     layout: "/admin",
     isSidemenu: true,
+    roles: ["Pegawai", "Admin", "Pengguna"]
   },
   {
     path: "/error/404",
@@ -43,6 +45,7 @@ var routes = [
     icon: "fas fa-laptop",
     component: PageNotFound,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/profile",
@@ -50,6 +53,7 @@ var routes = [
     icon: "fas fa-laptop",
     component: Profile,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/loans",
@@ -58,6 +62,7 @@ var routes = [
     component: LoanIndex,
     layout: "/admin",
     isSidemenu: true,
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/loans/create",
@@ -65,6 +70,7 @@ var routes = [
     icon: "fas fa-money-check",
     component: LoanCreate,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/loans/:id",
@@ -72,6 +78,7 @@ var routes = [
     icon: "fas fa-money-check",
     component: LoanDetail,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/loans/edit/:id",
@@ -79,6 +86,7 @@ var routes = [
     icon: "fas fa-money-check",
     component: LoanEdit,
     layout: "/admin",
+    roles: ["Admin"]
   },
   {
     path: "/balances",
@@ -87,6 +95,7 @@ var routes = [
     component: BalanceIndex,
     layout: "/admin",
     isSidemenu: true,
+    roles: ["Admin"]
   },
   {
     path: "/balances/create",
@@ -94,6 +103,7 @@ var routes = [
     icon: "fas fa-list",
     component: BalanceCreate,
     layout: "/admin",
+    roles: ["Admin"]
   },
   {
     path: "/employees",
@@ -102,6 +112,15 @@ var routes = [
     component: EmployeeIndex,
     layout: "/admin",
     isSidemenu: true,
+    roles: ["Admin"]
+  },
+  {
+    path: "/employees/:id",
+    name: "Pegawai",
+    icon: "fas fa-user-tie",
+    component: EmployeeDetail,
+    layout: "/admin",
+    roles: ["Admin"]
   },
   {
     path: "/users",
@@ -110,6 +129,7 @@ var routes = [
     component: UserIndex,
     layout: "/admin",
     isSidemenu: true,
+    roles: ["Pegawai", "Admin"]
   },
 
   {
@@ -118,6 +138,7 @@ var routes = [
     icon: "fas fa-user",
     component: UserCreate,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/users/:id",
@@ -125,6 +146,7 @@ var routes = [
     icon: "fas fa-user",
     component: UserDetail,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/users/edit/:type/:id",
@@ -132,6 +154,7 @@ var routes = [
     icon: "fas fa-user",
     component: UserEdit,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/deposits",
@@ -140,6 +163,7 @@ var routes = [
     component: DepositIndex,
     layout: "/admin",
     isSidemenu: true,
+    roles: ["Admin"]
   },
   {
     path: "/deposits/create",
@@ -147,6 +171,7 @@ var routes = [
     icon: "fas fa-database",
     component: DepositCreate,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/deposits/:id",
@@ -154,6 +179,7 @@ var routes = [
     icon: "fas fa-database",
     component: DepositDetail,
     layout: "/admin",
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/deposits/edit/:id",
@@ -161,6 +187,7 @@ var routes = [
     icon: "fas fa-database",
     component: DepositEdit,
     layout: "/admin",
+    roles: ["Admin"]
   },
   {
     path: "/report",
@@ -168,7 +195,8 @@ var routes = [
     icon: "fas fa-chart-bar",
     component: Report,
     layout: "/admin",
-    isSidemenu: true
+    isSidemenu: true,
+    roles: ["Pegawai", "Admin"]
   },
   {
     path: "/login",

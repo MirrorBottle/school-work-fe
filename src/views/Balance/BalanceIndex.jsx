@@ -131,10 +131,10 @@ class BalanceIndex extends Component {
                 key: "action",
                 title: "Aksi",
                 dataIndex: "action",
-                render: (text, record, index) => <Button size="sm" onClick={() => this.handleDelete(record.id)} color="danger" disabled={index === 0}>
+                render: (text, record, index) => index !== 0 && (<Button size="sm" onClick={() => this.handleDelete(record.id)} color="danger" >
                     <i className="fas fa-trash-alt mr-2"></i>
                     Hapus
-                </Button>
+                </Button>)
             }
         ];
         return (

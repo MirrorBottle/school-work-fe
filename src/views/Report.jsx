@@ -20,14 +20,24 @@ import { Formik } from "formik"
 import moment from "moment";
 import { LoadingButton } from "components/Shared/Shared"
 import API from "api"
+import Select from "react-select";
 const { RangePicker } = DatePicker;
 class Report extends Component {
     handleSubmit = (values, actions) => {
-        window.open(`${process.env.REACT_APP_BASE_URL}/api/loans/export/${moment(values.startDate, "DD-MM-YYYY").format("YYYY-MM-DD")}/${moment(values.endDate, "DD-MM-YYYY").format("YYYY-MM-DD")}`, "_blank")
+        window.open(`${process.env.REACT_APP_BASE_URL}/api/export/${moment(values.startDate, "DD-MM-YYYY").format("YYYY-MM-DD")}/${moment(values.endDate, "DD-MM-YYYY").format("YYYY-MM-DD")}/${values.type}`, "_blank")
         actions.setSubmitting(false);
-        actions.resetForm();
     }
     render() {
+        const selects = [
+            {
+                label: "Peminjaman",
+                value: 1,
+            },
+            {
+                label: "Setoran",
+                value: 2,
+            }
+        ]
         return (
             <Container className="mt--7" fluid>
                 <Card className="shadow">
@@ -38,7 +48,8 @@ class Report extends Component {
                         onSubmit={this.handleSubmit}
                         initialValues={{
                             startDate: "",
-                            endDate: ""
+                            endDate: "",
+                            type: 1,
                         }}
                         validationSchema={Yup.object().shape({
                             startDate: Yup.string().required("Tanggal awal laporan wajib dipilih!"),
@@ -47,6 +58,16 @@ class Report extends Component {
                     >{({ handleSubmit, handleChange, errors, touched, setFieldValue, isSubmitting }) => (
                         <Form onSubmit={handleSubmit}>
                             <CardBody>
+                                <FormGroup>
+                                    <Label className="d-block">Jenis Laporan</Label>
+                                    <Select
+                                        placeholder="Pilih Jenis Laporan"
+                                        options={selects}
+                                        isDisabled={isSubmitting}
+                                        defaultValue={selects[0]}
+                                        onChange={(value) => setFieldValue("type", value.value)}
+                                    />
+                                </FormGroup>
                                 <FormGroup>
                                     <Label className="d-block">Tanggal Awal - Tanggal Akhir</Label>
                                     <RangePicker

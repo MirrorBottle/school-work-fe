@@ -10,7 +10,7 @@ import {
     Col,
     Button,
 } from "reactstrap";
-import { Table, OptionalBadge, ActionDropdown } from "components/Shared/Shared";
+import { Table, OptionalBadge, ActionDropdown, Alert } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import API from "api";
 class LoanIndex extends React.Component {
@@ -18,7 +18,7 @@ class LoanIndex extends React.Component {
         isLoading: true,
         loans: []
     }
-    componentDidMount() {
+    getLoanData = () => {
         API()
             .get("loans")
             .then((resp) => this.setState({
@@ -27,6 +27,15 @@ class LoanIndex extends React.Component {
             }, () => console.log(resp)))
             .catch((err) => console.log(err, err.response))
     }
+    handleDelete = (id) => {
+        this.setState({ isLoading: true }, () => API().delete(`loans/${id}`)
+            .then(resp => Alert("success", "Hapus Peminjaman", "Berhasil menghapus peminjaman!"))
+            .catch(err => Alert("error", "Hapus Peminjaman", err.response.data.message))
+            .finally(() => this.getLoanData()))
+    }
+    componentDidMount() {
+        this.getLoanData()
+    }
     render() {
         const { loans, isLoading } = this.state;
         const columns = [
@@ -34,6 +43,11 @@ class LoanIndex extends React.Component {
                 key: "userName",
                 title: "Nama Peminjam",
                 dataIndex: "userName",
+            },
+            {
+                key: "startDate",
+                title: "Tanggal Peminjaman",
+                dataIndex: "startDate",
             },
             {
                 key: "dueDate",
@@ -89,7 +103,8 @@ class LoanIndex extends React.Component {
                 render: (value, record) => <ActionDropdown
                     onDetailClick={() => this.props.history.push(`/admin/loans/${record.id}`)}
                     onEditClick={() => this.props.history.push(`/admin/loans/edit/${record.id}`)}
-                    onDeleteClick={() => console.log(record.id)}
+                    onDeleteClick={() => this.handleDelete(record.id)}
+                    onDeleteClickMessage="Peminjaman LUNAS yang dihapus tidak akan bisa dikembalikan dan tidak akan mengubah saldo!"
                 />
             }
         ];
