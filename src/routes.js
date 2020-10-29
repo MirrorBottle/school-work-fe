@@ -25,6 +25,8 @@ import EmployeeDetail from "views/Employee/EmployeeDetail"
 //Balance
 import BalanceIndex from "views/Balance/BalanceIndex";
 import BalanceCreate from "views/Balance/BalanceCreate";
+// Loan Submissions
+import LoanSubmissionCreate from "views/LoanSubmission/LoanSubmissionCreate";
 // Profile
 import Profile from "views/Profile/Profile";
 // Report
@@ -45,7 +47,7 @@ var routes = [
     icon: "fas fa-laptop",
     component: PageNotFound,
     layout: "/admin",
-    roles: ["Pegawai", "Admin"]
+    roles: ["Pegawai", "Admin", "Pengguna"]
   },
   {
     path: "/profile",
@@ -53,7 +55,7 @@ var routes = [
     icon: "fas fa-laptop",
     component: Profile,
     layout: "/admin",
-    roles: ["Pegawai", "Admin"]
+    roles: ["Pegawai", "Admin", "Pengguna"]
   },
   {
     path: "/loans",
@@ -87,6 +89,24 @@ var routes = [
     component: LoanEdit,
     layout: "/admin",
     roles: ["Admin"]
+  },
+  {
+    path: "/submissions",
+    name: "Pengajuan Peminjaman",
+    icon: "fas fa-file",
+    component: LoanIndex,
+    layout: "/admin",
+    isSidemenu: true,
+    roles: ["Pegawai", "Admin"]
+  },
+  {
+    path: "/submissions/create",
+    name: "Pengajuan Peminjaman",
+    icon: "fas fa-file",
+    component: LoanSubmissionCreate,
+    layout: "/admin",
+    isSidemenu: true,
+    roles: ["Pengguna"]
   },
   {
     path: "/balances",

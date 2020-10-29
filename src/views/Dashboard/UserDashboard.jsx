@@ -37,20 +37,21 @@ class Index extends React.Component {
     state = {
         isLoading: true,
         loans: [],
-        payments: []
+        payments: [],
+        loanSubmissions: []
     }
     componentDidMount() {
         API().get("dashboard/user")
             .then(({ data }) => {
-                const { payments, loans } = data;
+                const { payments, loans, loanSubmissions } = data;
                 this.setState({
-                    isLoading: false, payments, loans
-                })
+                    isLoading: false, payments, loans, loanSubmissions
+                }, () => console.log(data))
             })
             .catch((err) => console.log(err, err.response))
     }
     render() {
-        const { isLoading, loans, payments } = this.state;
+        const { isLoading, loans, payments, loanSubmissions } = this.state;
         const LoanColumns = [
             {
                 key: "startDate",
@@ -172,6 +173,36 @@ class Index extends React.Component {
                 )
             }
         ]
+        const LoanSubmissionColumns = [
+            {
+                key: "createdData",
+                title: "Tanggal Mengajukan",
+                dataIndex: "createdData",
+            },
+            {
+                key: "startDate",
+                title: "Tanggal Mulai Peminjaman",
+                dataIndex: "startDate",
+            },
+            {
+                key: "totalLoan",
+                title: "Total peminjaman",
+                dataIndex: "totalLoan",
+                isCurrency: true,
+            },
+            {
+                key: "status",
+                title: "Status",
+                dataIndex: "status",
+                render: (status) => <OptionalBadge value={status} />
+            },
+            {
+                key: "message",
+                title: "Pesan",
+                dataIndex: "message",
+                render: (message) => message === null ? "-" : message
+            },
+        ]
         return (
             <React.Fragment>
                 <Container className="mt--7" fluid>
@@ -188,6 +219,22 @@ class Index extends React.Component {
                                 loading={isLoading}
                                 data={payments}
                                 columns={PaymentsColumns}
+                            />
+                        </CardBody>
+                    </Card>
+                    <Card className="shadow-lg mt-4">
+                        <CardHeader className="bg-transparent">
+                            <Row className="align-items-center">
+                                <div className="col">
+                                    <h2 className="mb-0">Riwayat Pengajuan Peminjaman</h2>
+                                </div>
+                            </Row>
+                        </CardHeader>
+                        <CardBody>
+                            <Table
+                                loading={isLoading}
+                                data={loanSubmissions}
+                                columns={LoanSubmissionColumns}
                             />
                         </CardBody>
                     </Card>

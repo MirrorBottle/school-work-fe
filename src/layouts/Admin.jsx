@@ -23,9 +23,9 @@ import { Container } from "reactstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import AdminFooter from "components/Footers/AdminFooter";
 import Sidebar from "components/Sidebar/Sidebar";
-
+import withPermission from "components/HOC/withPermission";
 import routes from "routes";
-
+import user from "user"
 class Admin extends React.Component {
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
@@ -41,7 +41,7 @@ class Admin extends React.Component {
           <Route
             exact
             path={propPath}
-            component={() => <prop.component />}
+            render={() => prop.roles.includes(user("role")) ? <prop.component /> : <Redirect to="/admin/error/404" key={key} />}
             key={key}
           />
         );

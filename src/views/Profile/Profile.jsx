@@ -29,7 +29,7 @@ import PaymentIndex from 'views/Payment/PaymentIndex';
 import { Link, Redirect, withRouter } from "react-router-dom"
 import { Spin } from "antd";
 import API from "api";
-import user from "user";
+import User from "user";
 import { UserFormSchema } from "views/User/UserCreate"
 import ProfileChangePassword from "./ProfileChangePassword"
 
@@ -44,7 +44,7 @@ class Profile extends Component {
     togglePasswordModal = () => this.setState({ isChangePasswordModalOpen: !this.state.isChangePasswordModalOpen })
     handleSubmit = (values) => {
         API()
-            .put(`users/${user("id")}`, {
+            .put(`users/${User("id")}`, {
                 ...values,
                 role: parseInt(values.role),
                 phoneNumber: `+62${values.phoneNumber}`
@@ -59,7 +59,7 @@ class Profile extends Component {
             .finally(() => this.props.history.push(`/admin/profile`))
     }
     componentDidMount() {
-        API().get(`${user("role") === "Pegawai" ? "employees" : "users"}/${user('id')}`)
+        API().get(`${User("role") === "Pegawai" ? "employees" : "users"}/${User('id')}`)
             .then((resp) => this.setState({
                 user: resp.data.user,
                 isLoading: false
@@ -123,7 +123,7 @@ class Profile extends Component {
         return (
             <Container className="mt--7" fluid>
                 <ProfileChangePassword isOpen={isChangePasswordModalOpen} toggle={this.togglePasswordModal} />
-                {user("role") === "Pegawai" && (
+                {User("role") === "Pegawai" && (
                     <Card className="shadow-lg mb-4">
                         <CardHeader className="border-0">
                             <Row>
