@@ -10,33 +10,38 @@ import {
     Input,
     Label,
     FormGroup,
+    FormFeedback,
 } from "reactstrap";
 import { LoadingButton, Confirm, Alert } from "components/Shared/Shared"
 import API from "api";
-export default class LoanStatusModal extends Component {
+import { withRouter } from "react-router-dom"
+class LoanSubmissionValidate extends Component {
     state = {
-        desc: "",
-        isPaid: true,
+        message: "",
+        isApprove: true,
         isLoading: false
     }
     handleSubmit = () => {
-        Confirm("Angsuran lunas akan masuk saldo dan tidak dapat diubah lagi").then(() => this.setState({ isLoading: true }, () => {
-            const { desc, isPaid } = this.state;
+        Confirm("Status pengajuan tidak akan bisa diubah kembali!").then(() => this.setState({ isLoading: true }, () => {
+            const { message, isApprove } = this.state;
             const { toggle, afterSubmit } = this.props;
             API()
-                .put(`payments/status/${this.props.payment.id}`, {
-                    status: isPaid ? 1 : 0,
-                    desc
+                .put(`loan-submissions/status/${this.props.submission.id}`, {
+                    isApprove: isApprove ? 1 : 0,
+                    message
                 })
-                .then(() => Alert("success", "Status Angsuran", "Berhasil mengubah status angsuran"))
+                .then((resp) => {
+                    Alert("success", "Status Pengajuan", "Berhasil mengubah status pengajuan")
+                    resp.data.loanSubmission.is_approve === 1 && this.props.history.push(`/admin/loans/create/${resp.data.loanSubmission.id}`)
+                })
                 .catch((err) => {
                     console.log(err, err.response);
-                    Alert("error", "Oops..!", "Gagal mengubah status angsuran")
+                    Alert("error", "Oops..!", "Gagal mengubah status pengajuan")
                 })
                 .finally(() => {
                     this.setState({
                         isLoading: false,
-                        desc: ""
+                        message: ""
                     }, () => {
                         afterSubmit()
                         toggle()
@@ -47,67 +52,74 @@ export default class LoanStatusModal extends Component {
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
-            desc: this.props.payment.description
+            message: this.props.submission.message
         })
     }
     render() {
-        const { isOpen, toggle, payment } = this.props;
-        const { desc, isLoading, isPaid } = this.state;
+        const { isOpen, toggle, submission } = this.props;
+        const { message, isLoading, isApprove } = this.state;
         return (
             <Modal isOpen={isOpen} toggle={toggle} backdrop={isLoading ? "static" : true}>
-                <ModalHeader toggle={toggle}>Perubahan Angsuran</ModalHeader>
+                <ModalHeader toggle={toggle}>Validasi Pengajuan</ModalHeader>
                 <ModalBody>
                     <Row>
-                        {payment.paymentDate !== null && (
+                        {submission.submissionDate !== null && (
                             <React.Fragment>
                                 <Col md={{ size: 6 }}>
                                     <Button
-                                        color={isPaid ? "success" : "secondary"}
+                                        color={isApprove ? "success" : "secondary"}
                                         block
                                         disabled={isLoading}
                                         onClick={() =>
-                                            this.setState({ isPaid: true })
+                                            this.setState({ isApprove: true })
                                         }
                                     >
-                                        <i className="fas fa-money-bill mr-2"></i>
-                                        LUNAS
+                                        <i className="fas fa-check mr-2"></i>
+                                        SETUJUI
                                     </Button>
                                 </Col>
                                 <Col md={{ size: 6 }}>
                                     <Button
                                         block
-                                        color={!isPaid ? "danger" : "secondary"}
+                                        color={!isApprove ? "danger" : "secondary"}
                                         disabled={isLoading}
                                         onClick={() =>
-                                            this.setState({ isPaid: false })
+                                            this.setState({ isApprove: false })
                                         }
                                     >
                                         <i className="fas fa-times-circle mr-2"></i>
-                                        BELUM LUNAS
+                                        TOLAK
                                     </Button>
                                 </Col>
                             </React.Fragment>
                         )}
                         <Col md={{ size: 12 }} className="mt-3">
                             <FormGroup>
-                                <Label>Deksripsi Tambahan</Label>
+                                <Label>Pesan</Label>
                                 <Input
                                     type="textarea"
-                                    placeholder="Deksripsi Tambahan"
-                                    required={payment && payment.status === "Belum Lunas Terlambat"}
-                                    onChange={(e) => this.setState({ desc: e.target.value })}
-                                    value={desc}
+                                    placeholder="Pesan"
+                                    required={!isApprove}
+                                    onChange={(e) => this.setState({ message: e.target.value })}
+                                    value={message}
                                     disabled={isLoading}
                                 />
+                                {(message === null || message === "") && !isApprove ? (
+                                    <FormFeedback className="d-block mt-1">
+                                        Pesan wajib diisi!
+                                    </FormFeedback>
+                                ) : null}
                             </FormGroup>
                         </Col>
                     </Row>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" disabled={isLoading} onClick={toggle}>Batal</Button>
-                    <LoadingButton color="primary" isLoading={isLoading} isDisabled={desc === "" && payment && payment.status === "Belum Lunas Terlambat"} onClick={this.handleSubmit}>Simpan</LoadingButton>
+                    <LoadingButton color="primary" isLoading={isLoading} isDisabled={(message === null || message === "") && !isApprove} onClick={this.handleSubmit}>Validasi</LoadingButton>
                 </ModalFooter>
             </Modal>
         )
     }
 }
+
+export default withRouter(LoanSubmissionValidate)

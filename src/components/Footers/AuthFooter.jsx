@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import { NavItem, NavLink, Nav, Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
 class Login extends React.Component {
   render() {
@@ -13,13 +13,11 @@ class Login extends React.Component {
               <Col xl="6">
                 <div className="copyright text-center text-xl-left text-muted">
                   © 2020{" "}
-                  <a
+                  <span
                     className="font-weight-bold ml-1"
-                    href="https://www.creative-tim.com?ref=adr-auth-footer"
-                    target="_blank"
                   >
                     Koperasi Simpan Pinjam
-                  </a>
+                  </span>
                 </div>
               </Col>
 

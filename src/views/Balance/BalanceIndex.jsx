@@ -8,9 +8,8 @@ import {
     Col,
     Button,
 } from "reactstrap";
-import { Table, OptionalBadge, ActionDropdown, Confirm, Alert } from "components/Shared/Shared";
+import { Table, OptionalBadge, Confirm, Alert } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
-import { Link } from "react-router-dom";
 import API from "api";
 import moment from "moment";
 class BalanceIndex extends Component {

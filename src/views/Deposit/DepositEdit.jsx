@@ -7,7 +7,6 @@ import {
     Row,
     Form,
     FormGroup,
-    Input,
     CardBody,
     CustomInput,
     Label,
@@ -22,7 +21,7 @@ import moment from "moment";
 import CurrencyInput from "react-currency-input-field"
 import Select from "react-select"
 import { LoadingButton, Alert } from "components/Shared/Shared"
-import { Link, Redirect, withRouter } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import { Spin, Alert as AntdAlert } from "antd";
 import API from "api";
 import { DepositFormSchemaShape as CreateSchemaShape, DepositTypeSelects } from "./DepositCreate";

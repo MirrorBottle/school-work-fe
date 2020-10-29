@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { ReactText } from "react";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom"; // reactstrap components
+import React from "react";
+import { withRouter } from "react-router-dom"; // reactstrap components
 import {
     Card,
     CardBody,
     FormGroup,
-    Button,
     Form,
     Input,
     InputGroupAddon,

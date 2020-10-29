@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { Table, Input, Button } from "antd";
-import { Badge } from "reactstrap";
 import uid from "uid";
 
 

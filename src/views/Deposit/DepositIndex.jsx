@@ -8,7 +8,7 @@ import {
     Col,
     Button,
 } from "reactstrap";
-import { Table, OptionalBadge, ActionDropdown, Confirm, Alert, } from "components/Shared/Shared";
+import { Table, OptionalBadge, ActionDropdown, Alert, } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import { Link, withRouter } from "react-router-dom";
 import API from "api";

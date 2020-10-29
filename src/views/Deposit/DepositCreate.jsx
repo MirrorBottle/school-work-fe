@@ -7,9 +7,7 @@ import {
     Row,
     Form,
     FormGroup,
-    Input,
     CardBody,
-    CustomInput,
     Label,
     Button,
     Col,
@@ -21,9 +19,8 @@ import * as Yup from "yup";
 import moment from "moment";
 import CurrencyInput from "react-currency-input-field"
 import Select from "react-select"
-import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm, Alert } from "components/Shared/Shared"
-import PaymentIndex from 'views/Payment/PaymentIndex';
-import { Link, Redirect, withRouter } from "react-router-dom"
+import { LoadingButton, Alert } from "components/Shared/Shared"
+import { Link, withRouter } from "react-router-dom"
 import { Spin } from "antd";
 import API from "api";
 import user from "user";
@@ -48,7 +45,7 @@ class DepositCreate extends Component {
         users: []
     }
     componentDidMount() {
-        user("role") == "Admin" ? API().get("employees")
+        user("role") === "Admin" ? API().get("employees")
             .then((resp) => this.setState({
                 users: resp.data.users.map((user) => ({
                     value: user.id,
@@ -59,7 +56,7 @@ class DepositCreate extends Component {
             .catch((err) => console.log(err, err.response)) : this.setState({
                 isLoading: false
             })
-        if (user("role") == "Admin") {
+        if (user("role") === "Admin") {
             DepositFormSchemaShape.userId = Yup.string().required("Wajib memilih peminjam!");
         }
     }
@@ -67,7 +64,7 @@ class DepositCreate extends Component {
         API()
             .post("deposits", {
                 ...values,
-                userId: user("role") == "Admin" ? values.userId : user("id")
+                userId: user("role") === "Admin" ? values.userId : user("id")
             })
             .then((resp) => {
                 Alert("success", "Tambah Setoran", "Tambah setoran berhasil!")
@@ -108,7 +105,7 @@ class DepositCreate extends Component {
                                 </CardHeader>
                                 <Spin spinning={isLoading}>
                                     <CardBody>
-                                        {user("role") == "Admin" && (
+                                        {user("role") === "Admin" && (
                                             <FormGroup>
                                                 <Label>Anggota Penyetor</Label>
                                                 <Select

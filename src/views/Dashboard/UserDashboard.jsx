@@ -1,20 +1,4 @@
-/*!
 
-=========================================================
-* Argon Dashboard React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 // react plugin used to create charts
 // reactstrap components
@@ -25,7 +9,6 @@ import {
     CardBody,
     Container,
     Row,
-    Col
 } from "reactstrap";
 import withFadeIn from "components/HOC/withFadeIn"
 import moment from "moment";
@@ -46,7 +29,7 @@ class Index extends React.Component {
                 const { payments, loans, loanSubmissions } = data;
                 this.setState({
                     isLoading: false, payments, loans, loanSubmissions
-                }, () => console.log(data))
+                })
             })
             .catch((err) => console.log(err, err.response))
     }
@@ -175,9 +158,9 @@ class Index extends React.Component {
         ]
         const LoanSubmissionColumns = [
             {
-                key: "createdData",
+                key: "createdDate",
                 title: "Tanggal Mengajukan",
-                dataIndex: "createdData",
+                dataIndex: "createdDate",
             },
             {
                 key: "startDate",

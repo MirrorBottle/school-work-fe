@@ -7,18 +7,12 @@ import {
     Col,
     Button,
     CardBody,
-    Badge,
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem
 } from "reactstrap";
 import withFadeIn from "components/HOC/withFadeIn"
 import { withRouter } from "react-router-dom"
 import API from "api";
 import Skeleton from "react-loading-skeleton";
 import { Table, OptionalBadge, Confirm, Alert } from "components/Shared/Shared";
-import Swal from "sweetalert2";
 
 class EmployeeDetail extends Component {
     state = {

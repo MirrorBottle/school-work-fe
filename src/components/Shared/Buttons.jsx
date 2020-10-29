@@ -2,14 +2,6 @@ import React from "react";
 import { Button } from "reactstrap";
 export const LoadingButton = (props) => {
     const { isLoading, type, color, onClick, className, isDisabled } = props;
-    let opacity = 0;
-    if (isLoading) {
-        opacity = 0;
-    } else if (isDisabled) {
-        opacity = 0;
-    } else {
-        opacity = 1;
-    }
     return (
         <Button
             type={type || "button"}

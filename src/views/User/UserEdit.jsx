@@ -20,16 +20,11 @@ import {
 } from "reactstrap";
 import { Formik } from "formik";
 import { DatePicker } from "antd";
-import * as Yup from "yup";
 import moment from "moment";
-import CurrencyInput from "react-currency-input-field"
-import Select from "react-select"
-import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm, Alert } from "components/Shared/Shared"
-import PaymentIndex from 'views/Payment/PaymentIndex';
-import { Link, Redirect, withRouter } from "react-router-dom"
+import { LoadingButton, Alert } from "components/Shared/Shared"
+import { Link, withRouter } from "react-router-dom"
 import { Spin } from "antd";
 import API from "api";
-import user from "user";
 import { UserFormSchema } from "./UserCreate"
 
 

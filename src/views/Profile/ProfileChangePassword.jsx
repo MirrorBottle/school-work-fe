@@ -15,7 +15,6 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { LoadingButton, Alert } from "components/Shared/Shared";
 import API from "api";
-import user from "user";
 export default class ProfilePasswordForm extends Component {
     handleSubmit = (values, actions) => {
         API().put("password/change", values)

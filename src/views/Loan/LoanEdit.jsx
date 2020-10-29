@@ -7,9 +7,7 @@ import {
     Row,
     Form,
     FormGroup,
-    Input,
     CardBody,
-    CustomInput,
     Label,
     Button,
     Col,
@@ -17,13 +15,11 @@ import {
 } from "reactstrap";
 import { Formik } from "formik";
 import { DatePicker } from "antd";
-import * as Yup from "yup";
 import moment from "moment";
 import CurrencyInput from "react-currency-input-field"
 import Select from "react-select"
-import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm } from "components/Shared/Shared"
-import PaymentIndex from 'views/Payment/PaymentIndex';
-import { Link, Redirect, withRouter } from "react-router-dom"
+import { PaymentSelects, InterestSelects, LoadingButton, Confirm } from "components/Shared/Shared"
+import { Link, withRouter } from "react-router-dom"
 import { LoanFormSchema } from "./LoanCreate";
 import { Spin } from "antd";
 import API from "api";

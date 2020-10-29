@@ -7,8 +7,6 @@ import DepositIndex from "views/Deposit/DepositIndex";
 import DepositCreate from "views/Deposit/DepositCreate";
 import DepositEdit from "views/Deposit/DepositEdit";
 import DepositDetail from "views/Deposit/DepositDetail";
-// Payment
-import PaymentIndex from "views/Payment/PaymentIndex";
 // Loan
 import LoanIndex from "views/Loan/LoanIndex"
 import LoanCreate from "views/Loan/LoanCreate"
@@ -27,6 +25,7 @@ import BalanceIndex from "views/Balance/BalanceIndex";
 import BalanceCreate from "views/Balance/BalanceCreate";
 // Loan Submissions
 import LoanSubmissionCreate from "views/LoanSubmission/LoanSubmissionCreate";
+import LoanSubmissionIndex from "views/LoanSubmission/LoanSubmissionIndex";
 // Profile
 import Profile from "views/Profile/Profile";
 // Report
@@ -67,7 +66,7 @@ var routes = [
     roles: ["Pegawai", "Admin"]
   },
   {
-    path: "/loans/create",
+    path: "/loans/create/:loanSubmissionId?",
     name: "Tambah Peminjaman",
     icon: "fas fa-money-check",
     component: LoanCreate,
@@ -94,7 +93,7 @@ var routes = [
     path: "/submissions",
     name: "Pengajuan Peminjaman",
     icon: "fas fa-file",
-    component: LoanIndex,
+    component: LoanSubmissionIndex,
     layout: "/admin",
     isSidemenu: true,
     roles: ["Pegawai", "Admin"]

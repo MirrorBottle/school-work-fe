@@ -17,18 +17,12 @@
 */
 import React from "react";
 // react plugin used to create charts
-import { Line, Bar, Pie } from "react-chartjs-2";
+import { Line, Pie } from "react-chartjs-2";
 // reactstrap components
 import {
-    Button,
     Card,
     CardHeader,
     CardBody,
-    NavItem,
-    NavLink,
-    Nav,
-    Progress,
-    Table,
     Container,
     Row,
     Col

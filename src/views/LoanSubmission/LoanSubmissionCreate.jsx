@@ -5,14 +5,10 @@ import {
     Card,
     CardHeader,
     Container,
-    Row,
     Form,
     FormGroup,
-    Input,
     CardBody,
     Label,
-    Button,
-    Col,
     FormFeedback,
 } from "reactstrap";
 import { DatePicker, Alert as AntdAlert } from "antd";
@@ -26,10 +22,6 @@ import API from "api";
 import { Formik } from "formik";
 import * as Yup from "yup";
 class LoanSubmissionCreate extends Component {
-    state = {
-        isLoading: true,
-        submissions: []
-    }
     handleSubmit = values => {
         API().post("loan-submissions", values)
             .then(() => Alert("success", "Pengajuan Peminjaman", "Berhasil membuat pengajuan peminjaman"))
@@ -98,7 +90,14 @@ class LoanSubmissionCreate extends Component {
                                             </FormFeedback>
                                         ) : null}
                                     </FormGroup>
-                                    <LoadingButton type="submit" isLoading={isSubmitting} className="btn-block" color="success">
+                                    <AntdAlert
+                                        message="Informasi!"
+                                        description="Pengajuan peminjaman akan diproses oleh pihak admin atau pengguna dan anda akan mengetahui statusnya di riwayat pengajuan yang ada di dashboard anda. Anda tidak akan diberitahu apabila pengajuan anda telah dihapus. Info selanjutnya akan diberikan oleh pihak admin atau pegawai melalui pesan."
+                                        type="info"
+                                        showIcon
+                                        closable
+                                    />
+                                    <LoadingButton type="submit" isLoading={isSubmitting} className="btn-block mt-3" color="success">
                                         <i className="fas fa-plus mr-2"></i>
                                         Ajukan Peminjaman
                                     </LoadingButton>

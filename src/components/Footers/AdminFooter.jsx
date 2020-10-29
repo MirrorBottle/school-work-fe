@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import { Row, Col } from "reactstrap";
 
 class Footer extends React.Component {
   render() {
@@ -11,14 +11,11 @@ class Footer extends React.Component {
           <Col xl="6">
             <div className="copyright text-center text-xl-left text-muted">
               © 2020{" "}
-              <a
+              <span
                 className="font-weight-bold ml-1"
-                href="https://www.creative-tim.com?ref=adr-admin-footer"
-                rel="noopener noreferrer"
-                target="_blank"
               >
                 Koperasi Simpan Pinjam
-              </a>
+              </span>
             </div>
           </Col>
 

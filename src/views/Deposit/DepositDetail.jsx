@@ -7,15 +7,12 @@ import {
     Col,
     Button,
     CardBody,
-    Badge,
 } from "reactstrap";
 import withFadeIn from "components/HOC/withFadeIn"
-import { withRouter, Link } from "react-router-dom"
-import PaymentPaidModal from "views/Payment/PaymentPaidModal"
+import { withRouter } from "react-router-dom"
 import API from "api";
-import moment from "moment";
 import Skeleton from "react-loading-skeleton";
-import { Table, OptionalBadge, CurrencyLabel, Confirm, Alert } from "components/Shared/Shared";
+import { OptionalBadge, CurrencyLabel, Confirm, Alert } from "components/Shared/Shared";
 import Swal from "sweetalert2";
 
 class DepositDetail extends Component {

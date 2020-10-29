@@ -7,7 +7,6 @@ import {
     Row,
     Col,
     Button,
-    DropdownItem
 } from "reactstrap";
 import { Table, ActionDropdown, Confirm, Alert } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";

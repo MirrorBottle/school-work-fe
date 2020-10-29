@@ -11,7 +11,6 @@ import {
 import { Table, ActionDropdown } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import { withRouter } from "react-router-dom";
-import moment from "moment";
 import API from "api"
 class EmployeeIndex extends React.Component {
     state = {

@@ -7,9 +7,7 @@ import {
     Row,
     Form,
     FormGroup,
-    Input,
     CardBody,
-    CustomInput,
     Label,
     Button,
     Col,
@@ -22,9 +20,8 @@ import moment from "moment";
 import CurrencyInput from "react-currency-input-field"
 import Select from "react-select"
 import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm, Alert } from "components/Shared/Shared"
-import PaymentIndex from 'views/Payment/PaymentIndex';
-import { Link, Redirect, withRouter } from "react-router-dom"
-import { Spin } from "antd";
+import { Link, withRouter } from "react-router-dom"
+import { Spin, Alert as AntdAlert } from "antd";
 import API from "api";
 
 const { RangePicker } = DatePicker;
@@ -42,7 +39,8 @@ class LoanCreate extends Component {
     state = {
         isLoading: true,
         payments: [],
-        users: []
+        users: [],
+        loanSubmission: {}
     }
     makePayments = (startDate, dueDate, paymentCounts, totalLoan, loanInterest) => {
         const paymentMonth = moment(dueDate, "DD-MM-YYYY").diff(moment(startDate, "DD-MM-YYYY"), 'months', true) / paymentCounts;
@@ -99,18 +97,27 @@ class LoanCreate extends Component {
         }
     }
     componentDidMount() {
+        const { loanSubmissionId } = this.props.match.params;
         API().get("users")
             .then((resp) => this.setState({
                 users: resp.data.users.map((user) => ({
                     value: user.id,
                     label: user.name
                 })),
-                isLoading: false
+                isLoading: loanSubmissionId === undefined
             }))
             .catch((err) => console.log(err, err.response))
+        if (loanSubmissionId !== undefined) {
+            API().get(`loan-submissions/${loanSubmissionId}`)
+                .then((resp) => this.setState({
+                    loanSubmission: resp.data.loanSubmission,
+                    isLoading: false
+                }, () => console.log(resp, this.state)))
+                .catch((err) => console.log(err, err.response))
+        }
     }
     render() {
-        const { payments, users, isLoading } = this.state;
+        const { payments, users, isLoading, loanSubmission } = this.state;
 
         const PaymentsColumns = [
             {
@@ -151,13 +158,14 @@ class LoanCreate extends Component {
             <Container className="mt--7" fluid>
                 <Formik
                     initialValues={{
-                        userId: "",
-                        startDate: "",
+                        userId: loanSubmission.id ? loanSubmission.userId : "",
+                        startDate: loanSubmission.id ? loanSubmission.startDate : "",
                         dueDate: "",
-                        totalLoan: 0,
+                        totalLoan: loanSubmission.id ? loanSubmission.totalLoan : 0,
                         paymentCounts: 0,
                         loanInterest: -1,
                     }}
+                    enableReinitialize
                     onSubmit={this.handleSubmit}
                     validationSchema={LoanFormSchema}
                 >{({
@@ -176,12 +184,23 @@ class LoanCreate extends Component {
                                 </CardHeader>
                                 <Spin spinning={isLoading}>
                                     <CardBody>
+                                        {loanSubmission.id && (
+                                            <AntdAlert
+                                                message="Peringatan!"
+                                                description="Karena pengajuan telah disetujui maka data pembuatan peminjaman (Total Peminjaman, Tanggal Peminjam, Peminjaman) akan dimasukkan secara otomatis berdasarkan pengajuan. Apabila anda membatalkan pembuatan sekarang, maka anda harus memasukkan data di atas secara manual."
+                                                type="warning"
+                                                className="mb-3"
+                                                showIcon
+                                                closable
+                                            />
+                                        )}
                                         <FormGroup>
                                             <Label>Peminjam</Label>
                                             <Select
                                                 placeholder="Pilih Peminjam"
                                                 options={users}
                                                 isDisabled={isSubmitting}
+                                                value={users.filter((user) => user.value === values.userId)[0]}
                                                 onChange={(value) => setFieldValue("userId", value.value)}
                                             />
                                             {errors.userId && touched.userId ? (
@@ -195,6 +214,7 @@ class LoanCreate extends Component {
                                             <RangePicker
                                                 disabled={isSubmitting}
                                                 format="DD-MM-YYYY"
+                                                value={[moment(values.startDate, "DD-MM-YYYY"), values.dueDate === "" ? "" : moment(values.dueDate, "DD-MM-YYYY")]}
                                                 ranges={{
                                                     '3 Bulan': [moment(), moment().add(3, 'months')],
                                                     '6 Bulan': [moment(), moment().add(6, 'months')],
@@ -232,8 +252,8 @@ class LoanCreate extends Component {
                                                 className="form-control"
                                                 prefix="Rp. "
                                                 placeholder="Masukkan Total Pinjaman"
-                                                defaultValue={values.totalLoan}
                                                 precision="0"
+                                                value={values.totalLoan}
                                                 onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
                                             />
                                             {errors.totalLoan && touched.totalLoan ? (
