@@ -62,6 +62,10 @@ class Sidebar extends React.Component {
       collapseOpen: false
     });
   };
+  handleLogout = () => {
+    localStorage.removeItem("auth");
+    this.props.history.push("/auth/login");
+  };
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
     return routes.map((prop, key) => {
@@ -142,11 +146,11 @@ class Sidebar extends React.Component {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/admin/profile" tag={Link}>
                   <i className="fas fa-user-circle" />
                   <span>My profile</span>
                 </DropdownItem>
-                <DropdownItem href="#pablo" className="text-danger" onClick={e => e.preventDefault()}>
+                <DropdownItem onClick={this.handleLogout} style={{ cursor: "pointer" }} className="text-danger">
                   <i className="fas fa-sign-out-alt" />
                   <span>Logout</span>
                 </DropdownItem>
@@ -162,11 +166,11 @@ class Sidebar extends React.Component {
                   <Col className="collapse-brand" xs="6">
                     {logo.innerLink ? (
                       <Link to={logo.innerLink}>
-                        <h2 className='font-weight-bold text-primary'>Koperasi Simpan Pinjam</h2>
+                        <h3 className='font-weight-bold text-primary'>Koperasi Simpan Pinjam</h3>
                       </Link>
                     ) : (
                         <a href={logo.outterLink}>
-                          <h2 className='font-weight-bold text-primary'>Koperasi Simpan Pinjam</h2>
+                          <h3 className='font-weight-bold text-primary'>Koperasi Simpan Pinjam</h3>
                         </a>
                       )}
                   </Col>

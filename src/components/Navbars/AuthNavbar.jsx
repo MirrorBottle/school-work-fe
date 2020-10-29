@@ -31,6 +31,10 @@ import {
 } from "reactstrap";
 
 class AdminNavbar extends React.Component {
+  handleLogout = () => {
+    localStorage.removeItem("auth");
+    this.props.history.push("/auth/login");
+  };
   render() {
     return (
       <>
