@@ -144,9 +144,6 @@ class LoanDetail extends Component {
                                 <i className="fas fa-sync"></i>
                             </Button>
                         )}
-                        <Button color="warning" className="ml-2 mt-1" size="sm" disabled={this.state.loan.status === "Ditolak" || this.state.loan.status === "Belum Divalidasi"}>
-                            <i className="fas fa-edit"></i>
-                        </Button>
                         <Button color="danger" className="ml-2 mt-1" disabled={this.state.loan.status === "Ditolak" || this.state.loan.status === "Belum Divalidasi"} onClick={() => this.handlePaymentDelete(record.id)} size="sm">
                             <i className="fas fa-trash-alt"></i>
                         </Button>
@@ -169,10 +166,6 @@ class LoanDetail extends Component {
                                         Pilihan
                                     </DropdownToggle>
                                     <DropdownMenu>
-                                        <DropdownItem disabled={isLoading} onClick={() => this.props.history.push('/admin/loans/create')} style={{ cursor: "pointer" }}>
-                                            <i className="fas fa-edit mr-2 text-warning"></i>
-                                            Edit
-                                        </DropdownItem>
                                         <DropdownItem disabled={isLoading || loan.status === "Lunas" || loan.status === "Belum Lunas"} onClick={this.handleValidation} style={{ cursor: "pointer" }}>
                                             <i className="fas fa-check mr-2 text-primary"></i>
                                             Validasi

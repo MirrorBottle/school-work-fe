@@ -104,7 +104,7 @@ class LoanCreate extends Component {
                     value: user.id,
                     label: user.name
                 })),
-                isLoading: loanSubmissionId === undefined
+                isLoading: !loanSubmissionId === undefined
             }))
             .catch((err) => console.log(err, err.response))
         if (loanSubmissionId !== undefined) {
@@ -214,7 +214,7 @@ class LoanCreate extends Component {
                                             <RangePicker
                                                 disabled={isSubmitting}
                                                 format="DD-MM-YYYY"
-                                                value={[moment(values.startDate, "DD-MM-YYYY"), values.dueDate === "" ? "" : moment(values.dueDate, "DD-MM-YYYY")]}
+                                                value={[values.startDate === "" ? "" : moment(values.startDate, "DD-MM-YYYY"), values.dueDate === "" ? "" : moment(values.dueDate, "DD-MM-YYYY")]}
                                                 ranges={{
                                                     '3 Bulan': [moment(), moment().add(3, 'months')],
                                                     '6 Bulan': [moment(), moment().add(6, 'months')],
