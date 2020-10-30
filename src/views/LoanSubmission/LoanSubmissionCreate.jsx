@@ -32,7 +32,6 @@ class LoanSubmissionCreate extends Component {
             .finally(() => this.props.history.push("/admin/index"))
     }
     render() {
-        const { isLoading, submissions } = this.state;
         return (
             <Container className="mt--7" fluid>
                 <Card className="shadow-lg">

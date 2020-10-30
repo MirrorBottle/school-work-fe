@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import withFadeIn from "components/HOC/withFadeIn"
 import moment from "moment";
-import { Table, OptionalBadge } from "components/Shared/Shared"
+import { Table, OptionalBadge, Alert, Confirm } from "components/Shared/Shared"
 import { Link } from "react-router-dom"
 // core components
 import API from "api";
@@ -23,7 +23,7 @@ class Index extends React.Component {
         payments: [],
         loanSubmissions: []
     }
-    componentDidMount() {
+    getUserDashboardData = () => {
         API().get("dashboard/user")
             .then(({ data }) => {
                 const { payments, loans, loanSubmissions } = data;
@@ -32,6 +32,23 @@ class Index extends React.Component {
                 })
             })
             .catch((err) => console.log(err, err.response))
+    }
+    handleDelete = (id) => {
+        Confirm("Apa anda yakin ingin menghapus pengajuan yang sudah anda buat?").then(() => {
+            this.setState({ isLoading: true }, () => API()
+                .delete(`loan-submissions/${id}`)
+                .then((resp) => {
+                    Alert("success", "Hapus Pengajuan", "Berhasil menghapus pengajuan")
+                })
+                .catch((err) => {
+                    Alert("error", "Oops..!", "Gagal menghapus pengajuan")
+                    console.log(err, err.response)
+                })
+                .finally(() => this.getUserDashboardData()))
+        })
+    }
+    componentDidMount() {
+        this.getUserDashboardData();
     }
     render() {
         const { isLoading, loans, payments, loanSubmissions } = this.state;
@@ -185,6 +202,15 @@ class Index extends React.Component {
                 dataIndex: "message",
                 render: (message) => message === null ? "-" : message
             },
+            {
+                key: "action",
+                title: "Aksi",
+                dataIndex: "action",
+                render: (text, record) => <Button size="sm" onClick={() => this.handleDelete(record.id)} color="danger" >
+                    <i className="fas fa-trash-alt mr-2"></i>
+                    Hapus
+                </Button>
+            }
         ]
         return (
             <React.Fragment>

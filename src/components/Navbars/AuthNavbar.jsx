@@ -48,7 +48,7 @@ class AdminNavbar extends React.Component {
                 <h2 className='font-weight-bold text-white'>Koperasi Simpan Pinjam</h2>
               </div>
             </NavbarBrand>
-            <button className="navbar-toggler" id="navbar-collapse-main">
+            <button className="navbar-toggler d-none" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />
             </button>
             <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
@@ -67,25 +67,10 @@ class AdminNavbar extends React.Component {
                       </div>
                     </Link>
                   </Col>
-                  <Col className="collapse-close" xs="6">
-                    <button
-                      className="navbar-toggler"
-                      id="navbar-collapse-main"
-                    >
-                      <span />
-                      <span />
-                    </button>
-                  </Col>
+
                 </Row>
               </div>
-              <Nav className="ml-auto" navbar>
-                <NavItem>
-                  <NavLink className="nav-link-icon" to="/" tag={Link}>
-                    <i className="fas fa-book" />
-                    <span className="nav-link-inner--text">Guide</span>
-                  </NavLink>
-                </NavItem>
-              </Nav>
+              <Nav className="ml-auto" navbar></Nav>
             </UncontrolledCollapse>
           </Container>
         </Navbar>

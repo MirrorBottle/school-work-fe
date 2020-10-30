@@ -9,7 +9,7 @@ import {
     Button,
     DropdownItem,
 } from "reactstrap";
-import { Table, OptionalBadge, ActionDropdown, Alert, } from "components/Shared/Shared";
+import { Table, OptionalBadge, ActionDropdown, Alert, Confirm } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import { withRouter } from "react-router-dom";
 import LoanSubmissionValidate from "./LoanSubmissionValidate";
@@ -21,8 +21,6 @@ class LoanSubmissionIndex extends React.Component {
         submission: {},
         isLoanSubmissionValidateModalOpen: false,
     }
-    toggleLoanSubmissionValidateModal = () => this.setState({ isLoanSubmissionValidateModalOpen: !this.state.isLoanSubmissionValidateModalOpen })
-
     getLoanSubmissionsData = () => {
         API()
             .get('loan-submissions')
@@ -31,6 +29,22 @@ class LoanSubmissionIndex extends React.Component {
                 isLoading: false
             }, () => console.log(resp)))
             .catch((err) => console.log(err, err.response))
+    }
+    toggleLoanSubmissionValidateModal = () => this.setState({ isLoanSubmissionValidateModalOpen: !this.state.isLoanSubmissionValidateModalOpen })
+
+    handleDeleteAll = () => {
+        Confirm("Semua pengajuan akan terhapus dan tidak akan bisa dikembalikan").then(() => {
+            this.setState({ isLoading: true }, () => API()
+                .delete("loan-submissions/all")
+                .then((resp) => {
+                    Alert("success", "Hapus Semua Pengajuan", "Berhasil menghapus semua pengajuan")
+                })
+                .catch((err) => {
+                    Alert("error", "Oops..!", "Gagal menghapus semua pengajuan")
+                    console.log(err, err.response)
+                })
+                .finally(() => this.getLoanSubmissionsData()))
+        })
     }
 
     handleDelete = (id) => {
@@ -138,7 +152,7 @@ class LoanSubmissionIndex extends React.Component {
                                             <h2 className="mb-0">Daftar Pengajuan Peminjaman</h2>
                                         </Col>
                                         <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
-                                            <Button color="danger">
+                                            <Button color="danger" onClick={this.handleDeleteAll}>
                                                 <i className="fas fa-trash-alt mr-2"></i>
                                                 Hapus Semua
                                             </Button>
