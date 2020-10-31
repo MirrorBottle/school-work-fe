@@ -126,7 +126,7 @@ class LoanSubmissionIndex extends React.Component {
                     onDeleteClickMessage="Pengguna yang mengajukan tidak akan mengetahui penghapusan ini!"
                     extraItem={
                         <React.Fragment>
-                            <DropdownItem style={{ cursor: "pointer" }} onClick={() => this.handleValidateLoanSubmission(record)} disabled={record.status !== "Proses"}>
+                            <DropdownItem style={{ cursor: "pointer" }} onClick={() => this.handleValidateLoanSubmission(record)} disabled={record.status !== "Diproses"}>
                                 <i className="fas fa-check text-primary"></i>
                                 Validasi
                             </DropdownItem>
