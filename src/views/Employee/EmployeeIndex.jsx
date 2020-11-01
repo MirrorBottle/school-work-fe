@@ -8,7 +8,7 @@ import {
     Col,
     Button,
 } from "reactstrap";
-import { Table, ActionDropdown } from "components/Shared/Shared";
+import { Table, ActionDropdown, Confirm, Alert } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import { withRouter } from "react-router-dom";
 import API from "api"
@@ -17,7 +17,7 @@ class EmployeeIndex extends React.Component {
         users: [],
         isLoading: true,
     }
-    componentDidMount() {
+    getEmployeesData = () => {
         API()
             .get('employees')
             .then((resp) => this.setState({
@@ -25,6 +25,36 @@ class EmployeeIndex extends React.Component {
                 isLoading: false
             }, () => console.log(resp)))
             .catch((err) => console.log(err, err.response))
+    }
+    handleDelete = (id) => {
+        Confirm("Data pegawai yang sudah memiliki relasi akan diminta konfirmasi kembali apabila benar-benar ingin dihapus").then(() => this.setState({ isLoading: true }, () => {
+            this.setState({ isLoading: true }, () => {
+                API().delete(`employees/${id}`)
+                    .then((resp) => {
+                        Alert("success", "Hapus Pegawai", "Berhasil menghapus pegawai")
+                        this.props.history.push('/admin/employees')
+                    })
+                    .catch((err) => {
+                        if (err.response.status === 403) {
+                            Confirm("Pegawai sudah melakukan setoran, apakah anda yakin ingin menghapus data pegawai dan semua setoran?")
+                                .then(() => API().delete(`users/${id}/force`)
+                                    .then((resp) => Alert("success", "Hapus Pegawai", "Berhasil menghapus pegawai"))
+                                    .catch((err) => {
+                                        Alert("error", "Hapus Pegawai", "Gagal menghapus pegawai");
+                                        console.log(err, err.response)
+                                    })
+                                    .finally(() => this.getEmployeesData())
+                                )
+                        } else {
+                            Alert("error", "Hapus Pegawai", "Gagal menghapus pegawai");
+                            console.log(err, err.response)
+                        }
+                    })
+            })
+        }))
+    }
+    componentDidMount() {
+        this.getEmployeesData()
     }
     render() {
         const { users, isLoading } = this.state;
@@ -61,6 +91,7 @@ class EmployeeIndex extends React.Component {
                 render: (text, record) => <ActionDropdown
                     onEditClick={() => this.props.history.push(`/admin/users/edit/employee/${record.id}`)}
                     onDetailClick={() => this.props.history.push(`/admin/employees/${record.id}`)}
+                    onDeleteClick={() => this.handleDelete(record.id)}
                 />
             }
         ];

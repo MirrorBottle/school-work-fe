@@ -44,6 +44,21 @@ class DepositCreate extends Component {
         isLoading: true,
         users: []
     }
+    handleSubmit = (values) => {
+        API()
+            .post("deposits", {
+                ...values,
+                userId: user("role") === "Admin" ? values.userId : user("id")
+            })
+            .then((resp) => {
+                Alert("success", "Tambah Setoran", "Tambah setoran berhasil!")
+            })
+            .catch((err) => {
+                Alert("error", "Oops!", "Tambah setoran gagal!")
+                console.log(err, err.response)
+            })
+            .finally(() => this.props.history.push(`/admin/${user("role") === "Admin" ? 'deposits' : 'profile'}`))
+    }
     componentDidMount() {
         user("role") === "Admin" ? API().get("employees")
             .then((resp) => this.setState({
@@ -60,21 +75,7 @@ class DepositCreate extends Component {
             DepositFormSchemaShape.userId = Yup.string().required("Wajib memilih peminjam!");
         }
     }
-    handleSubmit = (values) => {
-        API()
-            .post("deposits", {
-                ...values,
-                userId: user("role") === "Admin" ? values.userId : user("id")
-            })
-            .then((resp) => {
-                Alert("success", "Tambah Setoran", "Tambah setoran berhasil!")
-            })
-            .catch((err) => {
-                Alert("error", "Oops!", "Tambah setoran gagal!")
-                console.log(err, err.response)
-            })
-            .finally(() => this.props.history.push(`/admin/${user("role") === "admin" ? 'deposits' : 'profile'}`))
-    }
+
     render() {
         const { users, isLoading } = this.state;
         const DepositFormSchema = Yup.object().shape(DepositFormSchemaShape)

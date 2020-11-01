@@ -79,7 +79,7 @@ var routes = [
     icon: "fas fa-money-check",
     component: LoanDetail,
     layout: "/admin",
-    roles: ["Pegawai", "Admin"]
+    roles: ["Pegawai", "Admin", "Pengguna"]
   },
   {
     path: "/loans/edit/:id",

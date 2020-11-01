@@ -13,6 +13,7 @@ import withFadeIn from "components/HOC/withFadeIn";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import API from "api";
+import user from "user";
 class UserIndex extends React.Component {
     state = {
         isLoading: true,
@@ -92,6 +93,8 @@ class UserIndex extends React.Component {
                     onEditClick={() => this.props.history.push(`/admin/users/edit/user/${record.id}`)}
                     onDetailClick={() => this.props.history.push(`/admin/users/${record.id}`)}
                     onDeleteClick={() => this.handleDelete(record.id)}
+                    withoutEdit={user("role") !== "Admin"}
+                    withoutDelete={user("role") !== "Admin"}
                     onDeleteClickMessage="Data pengguna yang sudah memiliki relasi akan diminta konfirmasi kembali apabila benar-benar ingin dihapus"
                 />
             }

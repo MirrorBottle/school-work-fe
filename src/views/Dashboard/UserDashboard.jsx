@@ -13,7 +13,7 @@ import {
 import withFadeIn from "components/HOC/withFadeIn"
 import moment from "moment";
 import { Table, OptionalBadge, Alert, Confirm } from "components/Shared/Shared"
-import { Link } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 // core components
 import API from "api";
 class Index extends React.Component {
@@ -164,12 +164,10 @@ class Index extends React.Component {
                 title: "Aksi",
                 dataIndex: "action",
                 render: (value, record) => (
-                    <Link to={`/admin/loans/${record.loanId}`}>
-                        <Button size="sm" color="primary">
-                            <i className="fas fa-eye mr-2"></i>
-                            Detail
-                        </Button>
-                    </Link>
+                    <Button size="sm" color="primary" onClick={() => this.props.history.push(`/admin/loans/${record.id}`)} >
+                        <i className="fas fa-eye mr-2"></i>
+                        Detail Peminjaman
+                    </Button>
                 )
             }
         ]
@@ -269,4 +267,4 @@ class Index extends React.Component {
     }
 }
 
-export default withFadeIn(Index);
+export default withRouter(withFadeIn(Index));

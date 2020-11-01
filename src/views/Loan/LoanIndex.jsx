@@ -13,6 +13,7 @@ import {
 import { Table, OptionalBadge, ActionDropdown, Alert } from "components/Shared/Shared";
 import withFadeIn from "components/HOC/withFadeIn";
 import API from "api";
+import user from "user";
 class LoanIndex extends React.Component {
     state = {
         isLoading: true,
@@ -102,14 +103,16 @@ class LoanIndex extends React.Component {
                 dataIndex: "action",
                 render: (value, record) => <ActionDropdown
                     onDetailClick={() => this.props.history.push(`/admin/loans/${record.id}`)}
-                    onEditClick={() => this.props.history.push(`/admin/loans/edit/${record.id}`)}
                     onDeleteClick={() => this.handleDelete(record.id)}
+                    withoutDelete={!user("role") !== "Admin"}
+                    withoutEdit={true}
                     onDeleteClickMessage="Peminjaman LUNAS yang dihapus tidak akan bisa dikembalikan dan tidak akan mengubah saldo!"
                 />
             }
         ];
         return (
             <Container className="mt--7" fluid>
+                {console.log(user("role") !== "Admin")}
                 <Row>
                     <div className="col">
                         <Card className="shadow">

@@ -13,7 +13,7 @@ import { withRouter } from "react-router-dom"
 import API from "api";
 import Skeleton from "react-loading-skeleton";
 import { Table, OptionalBadge, Confirm, Alert } from "components/Shared/Shared";
-
+import User from "user"
 class UserDetail extends Component {
     state = {
         isLoading: true,
@@ -136,14 +136,18 @@ class UserDetail extends Component {
                                 <h1 className="mb-0">Detail Pengguna</h1>
                             </Col>
                             <Col md="3" xs="12" sm="12" className="d-flex justify-content-start mt-2">
-                                <Button disabled={isLoading} color="warning" onClick={() => this.props.history.push(`/admin/users/edit/user/${user.id}`)}>
-                                    <i className="fas fa-edit mr-2"></i>
-                                    Edit
-                                </Button>
-                                <Button disabled={isLoading} color="danger" onClick={this.handleDelete}>
-                                    <i className="fas fa-trash-alt mr-2"></i>
-                                    Hapus
-                                </Button>
+                                {User("role") === "Admin" && (
+                                    <Button disabled={isLoading} color="warning" onClick={() => this.props.history.push(`/admin/users/edit/user/${user.id}`)}>
+                                        <i className="fas fa-edit mr-2"></i>
+                                        Edit
+                                    </Button>
+                                )}
+                                {User("role") === "Admin" && (
+                                    <Button disabled={isLoading} color="danger" onClick={this.handleDelete}>
+                                        <i className="fas fa-trash-alt mr-2"></i>
+                                        Hapus
+                                    </Button>
+                                )}
                             </Col>
                         </Row>
                     </CardHeader>

@@ -19,6 +19,7 @@ import API from "api";
 import Skeleton from "react-loading-skeleton";
 import { Table, OptionalBadge, CurrencyLabel, Confirm, Alert } from "components/Shared/Shared";
 import Swal from "sweetalert2";
+import user from "user";
 class LoanDetail extends Component {
     state = {
         isLoading: true,
@@ -130,23 +131,25 @@ class LoanDetail extends Component {
                 dataIndex: "action",
                 render: (text, record) => (
                     <React.Fragment>
-                        {((record.status === "Belum Lunas" || record.status === "Belum Lunas Terlambat") && record.paymentDate === null) && (
+                        {((record.status === "Belum Lunas" || record.status === "Belum Lunas Terlambat") && record.paymentDate === null && user("role") !== "Pengguna") && (
                             <Button color="success" className="ml-2 mt-1" size="sm" onClick={() => this.setState({
                                 selectedPayment: record
                             }, () => this.handlePaymentPaidModalToggle())} disabled={this.state.loan.status === "Ditolak" || this.state.loan.status === "Belum Divalidasi"}>
                                 <i className="fas fa-money-bill"></i>
                             </Button>
                         )}
-                        {(record.status === "Lunas" || record.status === "Lunas Terlambat" || record.paymentDate !== null) && (
+                        {(user("role") !== "Pengguna" && record.status === "Lunas" || record.status === "Lunas Terlambat" || record.paymentDate !== null) && (
                             <Button color="primary" className="ml-2 mt-1" size="sm" disabled={this.state.loan.status === "Ditolak" || this.state.loan.status === "Belum Divalidasi"} onClick={() => this.setState({
                                 selectedPayment: record
                             }, () => this.handlePaymentPaidModalToggle())}>
                                 <i className="fas fa-sync"></i>
                             </Button>
                         )}
-                        <Button color="danger" className="ml-2 mt-1" disabled={this.state.loan.status === "Ditolak" || this.state.loan.status === "Belum Divalidasi"} onClick={() => this.handlePaymentDelete(record.id)} size="sm">
-                            <i className="fas fa-trash-alt"></i>
-                        </Button>
+                        {user("role") === "Admin" && (
+                            <Button color="danger" className="ml-2 mt-1" disabled={this.state.loan.status === "Ditolak" || this.state.loan.status === "Belum Divalidasi"} onClick={() => this.handlePaymentDelete(record.id)} size="sm">
+                                <i className="fas fa-trash-alt"></i>
+                            </Button>
+                        )}
                     </React.Fragment>
                 )
             },
@@ -162,28 +165,36 @@ class LoanDetail extends Component {
                             </Col>
                             <Col md="5" xs="12" sm="12" className="d-flex justify-content-end mt-2">
                                 <UncontrolledButtonDropdown className="mr-2">
-                                    <DropdownToggle caret color="info">
-                                        Pilihan
-                                    </DropdownToggle>
+                                    {user("role") !== "Pengguna" && (
+                                        <DropdownToggle caret color="info">
+                                            Pilihan
+                                        </DropdownToggle>
+                                    )}
                                     <DropdownMenu>
-                                        <DropdownItem disabled={isLoading || loan.status === "Lunas" || loan.status === "Belum Lunas"} onClick={this.handleValidation} style={{ cursor: "pointer" }}>
-                                            <i className="fas fa-check mr-2 text-primary"></i>
-                                            Validasi
-                                        </DropdownItem>
+                                        {user("role") === "Admin" && (
+                                            <DropdownItem disabled={isLoading || loan.status === "Lunas" || loan.status === "Belum Lunas"} onClick={this.handleValidation} style={{ cursor: "pointer" }}>
+                                                <i className="fas fa-check mr-2 text-primary"></i>
+                                                Validasi
+                                            </DropdownItem>
+                                        )}
                                         <DropdownItem disabled={isLoading} onClick={this.handlePrint} style={{ cursor: "pointer" }}>
                                             <i className="fas fa-print mr-2 text-info"></i>
                                             Print
                                         </DropdownItem>
-                                        <DropdownItem disabled={isLoading} onClick={this.handleLoanDelete} style={{ cursor: "pointer" }}>
-                                            <i className="fas fa-trash-alt text-danger mr-2"></i>
-                                            Hapus
-                                        </DropdownItem>
+                                        {user("role") === "Admin" && (
+                                            <DropdownItem disabled={isLoading} onClick={this.handleLoanDelete} style={{ cursor: "pointer" }}>
+                                                <i className="fas fa-trash-alt text-danger mr-2"></i>
+                                                Hapus
+                                            </DropdownItem>
+                                        )}
                                     </DropdownMenu>
                                 </UncontrolledButtonDropdown>
-                                <Button disabled={isLoading || loan.status === "Ditolak" || loan.status === "Lunas" || loan.payments.filter((payment) => payment.status === "Belum Lunas" || payment.status === "Belum Lunas Terlambat").length > 0} color="success" onClick={this.handlePaidClick}>
-                                    <i className="fas fa-money-bill mr-2"></i>
-                                    Lunas
-                                </Button>
+                                {user("role") !== "Pengguna" && (
+                                    <Button disabled={isLoading || loan.status === "Ditolak" || loan.status === "Lunas" || loan.payments.filter((payment) => payment.status === "Belum Lunas" || payment.status === "Belum Lunas Terlambat").length > 0} color="success" onClick={this.handlePaidClick}>
+                                        <i className="fas fa-money-bill mr-2"></i>
+                                        Lunas
+                                    </Button>
+                                )}
                             </Col>
                         </Row>
                     </CardHeader>
