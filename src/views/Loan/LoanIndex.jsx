@@ -104,7 +104,7 @@ class LoanIndex extends React.Component {
                 render: (value, record) => <ActionDropdown
                     onDetailClick={() => this.props.history.push(`/admin/loans/${record.id}`)}
                     onDeleteClick={() => this.handleDelete(record.id)}
-                    withoutDelete={!user("role") !== "Admin"}
+                    withoutDelete={user("role") !== "Admin"}
                     withoutEdit={true}
                     onDeleteClickMessage="Peminjaman LUNAS yang dihapus tidak akan bisa dikembalikan dan tidak akan mengubah saldo!"
                 />
@@ -112,7 +112,6 @@ class LoanIndex extends React.Component {
         ];
         return (
             <Container className="mt--7" fluid>
-                {console.log(user("role") !== "Admin")}
                 <Row>
                     <div className="col">
                         <Card className="shadow">

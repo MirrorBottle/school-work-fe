@@ -65,7 +65,7 @@ class Report extends Component {
                                     />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label className="d-block">Tanggal Awal - Tanggal Akhir</Label>
+                                    <Label className="d-block">Tanggal Peminjaman</Label>
                                     <RangePicker
                                         disabled={isSubmitting}
                                         format="DD-MM-YYYY"
