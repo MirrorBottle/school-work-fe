@@ -164,7 +164,7 @@ class Index extends React.Component {
                 title: "Aksi",
                 dataIndex: "action",
                 render: (value, record) => (
-                    <Button size="sm" color="primary" onClick={() => this.props.history.push(`/admin/loans/${record.id}`)} >
+                    <Button size="sm" color="primary" onClick={() => this.props.history.push(`/admin/loans/${record.loanId}`)} >
                         <i className="fas fa-eye mr-2"></i>
                         Detail Peminjaman
                     </Button>
