@@ -107,7 +107,7 @@ class Profile extends Component {
                 title: "Aksi",
                 dataIndex: "action",
                 render: (value, record) => (
-                    <Button size="sm" color="primary" onClick={() => this.props.history.push(`/admin/payments/${record.id}`)}>
+                    <Button size="sm" color="primary" onClick={() => this.props.history.push(`/admin/deposits/${record.id}`)}>
                         <i className="fas fa-eye mr-2"></i>
                         Detail
                     </Button>
