@@ -165,11 +165,14 @@ class Profile extends Component {
                     isSubmitting
                 }) => (
                         <Form onSubmit={handleSubmit}>
+                            {console.log(errors)}
+
                             <Card className="shadow-lg">
                                 <CardHeader className="border-0">
                                     <Row>
                                         <Col md="4" xs="4" sm="12">
                                             <h2 className="mb-0">Profile</h2>
+                                            <p>{JSON.stringify(errors)}</p>
                                         </Col>
                                         <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
                                             <Button color="dark" onClick={this.togglePasswordModal}>
