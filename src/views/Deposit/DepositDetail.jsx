@@ -14,7 +14,7 @@ import API from "api";
 import Skeleton from "react-loading-skeleton";
 import { OptionalBadge, CurrencyLabel, Confirm, Alert } from "components/Shared/Shared";
 import Swal from "sweetalert2";
-
+import user from "user";
 class DepositDetail extends Component {
     state = {
         isLoading: true,
@@ -81,20 +81,22 @@ class DepositDetail extends Component {
                             <Col md="8" xs="12" sm="12">
                                 <h1 className="mb-0">Detail Setoran</h1>
                             </Col>
-                            <Col md="4" xs="12" sm="12" className="d-flex justify-content-start mt-2">
-                                <Button disabled={isLoading} color="warning" onClick={() => this.props.history.push(`/admin/deposits/edit/${deposit.id}`)}>
-                                    <i className="fas fa-edit mr-2"></i>
-                                    Edit
-                                </Button>
-                                <Button disabled={isLoading} color="danger" onClick={this.handleDelete}>
-                                    <i className="fas fa-trash-alt mr-2"></i>
-                                    Hapus
-                                </Button>
-                                <Button disabled={isLoading || deposit.status !== "Belum Divalidasi"} color="primary" onClick={this.handleValidation}>
-                                    <i className="fas fa-check mr-2"></i>
-                                    Validasi
-                                </Button>
-                            </Col>
+                            {user("role") === "Admin" && (
+                                <Col md="4" xs="12" sm="12" className="d-flex justify-content-start mt-2">
+                                    <Button disabled={isLoading} color="warning" onClick={() => this.props.history.push(`/admin/deposits/edit/${deposit.id}`)}>
+                                        <i className="fas fa-edit mr-2"></i>
+                                        Edit
+                                    </Button>
+                                    <Button disabled={isLoading} color="danger" onClick={this.handleDelete}>
+                                        <i className="fas fa-trash-alt mr-2"></i>
+                                        Hapus
+                                    </Button>
+                                    <Button disabled={isLoading || deposit.status !== "Belum Divalidasi"} color="primary" onClick={this.handleValidation}>
+                                        <i className="fas fa-check mr-2"></i>
+                                        Validasi
+                                    </Button>
+                                </Col>
+                            )}
                         </Row>
                     </CardHeader>
                     <CardBody>
