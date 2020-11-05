@@ -138,7 +138,7 @@ class LoanDetail extends Component {
                                 <i className="fas fa-money-bill"></i>
                             </Button>
                         )}
-                        {(user("role") !== "Pengguna" && record.status === "Lunas" || record.status === "Lunas Terlambat" || record.paymentDate !== null) && (
+                        {(user("role") !== "Pengguna" && (record.status === "Lunas" || record.status === "Lunas Terlambat" || record.paymentDate !== null)) && (
                             <Button color="primary" className="ml-2 mt-1" size="sm" disabled={this.state.loan.status === "Ditolak" || this.state.loan.status === "Belum Divalidasi"} onClick={() => this.setState({
                                 selectedPayment: record
                             }, () => this.handlePaymentPaidModalToggle())}>
