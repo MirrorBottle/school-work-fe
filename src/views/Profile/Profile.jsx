@@ -63,7 +63,6 @@ class Profile extends Component {
     }
     render() {
         const { isLoading, user, isChangePasswordModalOpen } = this.state;
-        console.log(user);
         const { id, deposits, loans, ...initialValues } = user;
         const DepositColumns = [
             {
@@ -129,8 +128,8 @@ class Profile extends Component {
                                     <Link to="/admin/deposits/create">
                                         <Button color="primary">
                                             <i className="fas fa-plus mr-2"></i>
-                                        Ajukan Setoran
-                                    </Button>
+                                            Ajukan Setoran
+                                        </Button>
                                     </Link>
                                 </Col>
                             </Row>
@@ -165,14 +164,12 @@ class Profile extends Component {
                     isSubmitting
                 }) => (
                         <Form onSubmit={handleSubmit}>
-                            {console.log(errors)}
 
                             <Card className="shadow-lg">
                                 <CardHeader className="border-0">
                                     <Row>
                                         <Col md="4" xs="4" sm="12">
                                             <h2 className="mb-0">Profile</h2>
-                                            <p>{JSON.stringify(errors)}</p>
                                         </Col>
                                         <Col md="8" xs="8" sm="12" className="d-flex justify-content-end">
                                             <Button color="dark" onClick={this.togglePasswordModal}>

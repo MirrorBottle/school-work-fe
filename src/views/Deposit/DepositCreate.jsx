@@ -103,6 +103,8 @@ class DepositCreate extends Component {
                             <Card className="shadow-lg">
                                 <CardHeader className="border-0">
                                     <h1 className="mb-0">Tambah Setoran</h1>
+                                    <p>{JSON.stringify(errors)}</p>
+                                    {console.log(errors)}
                                 </CardHeader>
                                 <Spin spinning={isLoading}>
                                     <CardBody>
