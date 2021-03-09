@@ -57,15 +57,19 @@ class BalanceCreate extends Component {
                                 <div className="col-md-10 col-xl-10 col-12">
                                     <FormGroup>
                                         <Label className="d-block">Saldo Perubahan</Label>
-                                        <CurrencyInput
-                                            disabled={isSubmitting}
-                                            className="form-control"
-                                            prefix="Rp. "
-                                            placeholder="Masukkan Total Pinjaman"
-                                            defaultValue={currentBalance}
-                                            precision="0"
-                                            onChange={(value, name) => console.log(value)}
-                                        />
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp</div>
+                                            </div>
+                                            <CurrencyInput
+                                                disabled={isSubmitting}
+                                                className="form-control"
+                                                placeholder="Masukkan Total Pinjaman"
+                                                defaultValue={currentBalance}
+                                                precision="0"
+                                                onChange={(value, name) => console.log(value)}
+                                            />
+                                        </div>
                                     </FormGroup>
                                 </div>
                                 <div className="col-md-1 col-xl-1 col-6 d-flex align-items-center">

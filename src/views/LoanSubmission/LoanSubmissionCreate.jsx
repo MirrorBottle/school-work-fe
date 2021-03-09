@@ -61,15 +61,19 @@ class LoanSubmissionCreate extends Component {
                                 <CardBody>
                                     <FormGroup>
                                         <Label htmlFor="totalLoan">Total Peminjaman</Label>
-                                        <CurrencyInput
-                                            disabled={isSubmitting}
-                                            className="form-control"
-                                            prefix="Rp. "
-                                            placeholder="Masukkan Total Setoran"
-                                            defaultValue={values.totalLoan}
-                                            precision="0"
-                                            onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
-                                        />
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp</div>
+                                            </div>
+                                            <CurrencyInput
+                                                disabled={isSubmitting}
+                                                className="form-control"
+                                                placeholder="Masukkan Total Setoran"
+                                                defaultValue={values.totalLoan}
+                                                precision="0"
+                                                onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
+                                            />
+                                        </div>
                                         {errors.totalLoan && touched.totalLoan ? (
                                             <FormFeedback className="d-block mt-1">
                                                 {errors.totalLoan}

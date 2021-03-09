@@ -247,15 +247,19 @@ class LoanCreate extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                             <Label htmlFor="totalLoan">Total Pinjaman</Label>
-                                            <CurrencyInput
-                                                disabled={isSubmitting}
-                                                className="form-control"
-                                                prefix="Rp. "
-                                                placeholder="Masukkan Total Pinjaman"
-                                                precision="0"
-                                                value={values.totalLoan}
-                                                onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
-                                            />
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Rp</div>
+                                                </div>
+                                                <CurrencyInput
+                                                    disabled={isSubmitting}
+                                                    className="form-control"
+                                                    placeholder="Masukkan Total Pinjaman"
+                                                    precision="0"
+                                                    defaultValue={values.totalLoan}
+                                                    onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
+                                                />
+                                            </div>
                                             {errors.totalLoan && touched.totalLoan ? (
                                                 <FormFeedback className="d-block mt-1">
                                                     {errors.totalLoan}
@@ -294,15 +298,19 @@ class LoanCreate extends Component {
                                         </Row>
                                         <FormGroup className="mt-3">
                                             <Label htmlFor="totalLoan">Total Pinjaman Dengan Bunga</Label>
-                                            <CurrencyInput
-                                                disabled
-                                                className="form-control"
-                                                prefix="Rp. "
-                                                placeholder="Masukkan Total Pinjaman"
-                                                value={values.loanInterest !== -1 && values.totalLoan !== 0 ? values.totalLoan + (values.totalLoan * values.loanInterest / 100) : 0}
-                                                precision="0"
-                                                onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
-                                            />
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Rp</div>
+                                                </div>
+                                                <CurrencyInput
+                                                    disabled
+                                                    className="form-control pl-2"
+                                                    placeholder="Masukkan Total Pinjaman"
+                                                    value={values.loanInterest !== -1 && values.totalLoan !== 0 ? values.totalLoan + (values.totalLoan * values.loanInterest / 100) : 0}
+                                                    precision="0"
+                                                    onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
+                                                />
+                                            </div>
                                             {errors.totalLoan && touched.totalLoan ? (
                                                 <FormFeedback className="d-block mt-1">
                                                     {errors.totalLoan}
