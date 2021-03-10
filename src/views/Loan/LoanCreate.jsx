@@ -23,6 +23,7 @@ import { PaymentSelects, InterestSelects, Table, LoadingButton, Confirm, Alert }
 import { Link, withRouter } from "react-router-dom"
 import { Spin, Alert as AntdAlert } from "antd";
 import API from "api";
+import Dropzone from 'react-dropzone';
 
 const { RangePicker } = DatePicker;
 
@@ -62,7 +63,11 @@ class LoanCreate extends Component {
     }
     storeData = (data) => {
         API()
-            .post("loans", data)
+            .post("loans", data, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+            })
             .then((resp) => {
                 Alert("success", "Tambah Peminjaman", "Tambah peminjaman berhasil!")
                 console.log(resp)
@@ -84,16 +89,25 @@ class LoanCreate extends Component {
             totalPayment: payments.length < 1 ? 0 : payments[0].totalPayment,
             totalPaymentInterest: payments.length < 1 ? 0 : payments[0].totalPaymentInterest,
             totalPaymentWithInterest: payments.length < 1 ? 0 : payments[0].totalPaymentWithInterest,
+            selfieWithIdCard: values.selfieWithIdCard[0],
+            idCard: values.idCard[0],
+            selfieWithIdCardBase64: null,
+            idCardBase64: null,
             payments: payments.map(({ by, roundedTotalPayment, ...data }) => ({
                 ...data
             }))
         }
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            const field = key === 'payments' ? JSON.stringify(data[key]) : data[key];
+            formData.append(key, field);
+        });
         if (payments.length < 1) {
             Confirm("Anda belum mengatur angsuran, apabila angsuran dimasukkan secara manual mungkin akan terjadi kesalahan data")
-                .then(() => this.storeData(data))
+                .then(() => this.storeData(formData))
                 .catch(() => actions.setSubmitting(false))
         } else {
-            this.storeData(data)
+            this.storeData(formData)
         }
     }
     componentDidMount() {
@@ -164,6 +178,10 @@ class LoanCreate extends Component {
                         totalLoan: loanSubmission.id ? loanSubmission.totalLoan : 0,
                         paymentCounts: 0,
                         loanInterest: -1,
+                        selfieWithIdCard: null,
+                        selfieWithIdCardBase64: null,
+                        idCard: null,
+                        idCardBase64: null
                     }}
                     enableReinitialize
                     onSubmit={this.handleSubmit}
@@ -247,15 +265,19 @@ class LoanCreate extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                             <Label htmlFor="totalLoan">Total Pinjaman</Label>
-                                            <CurrencyInput
-                                                disabled={isSubmitting}
-                                                className="form-control"
-                                                prefix="Rp. "
-                                                placeholder="Masukkan Total Pinjaman"
-                                                precision="0"
-                                                value={values.totalLoan}
-                                                onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
-                                            />
+                                            <div className="input-group">
+                                                <div className="input-group-prepend">
+                                                    <div className="input-group-text">Rp</div>
+                                                </div>
+                                                <CurrencyInput
+                                                    disabled={isSubmitting}
+                                                    className="form-control"
+                                                    placeholder="Masukkan Total Pinjaman"
+                                                    precision="0"
+                                                    defaultValue={values.totalLoan}
+                                                    onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
+                                                />
+                                            </div>
                                             {errors.totalLoan && touched.totalLoan ? (
                                                 <FormFeedback className="d-block mt-1">
                                                     {errors.totalLoan}
@@ -294,15 +316,19 @@ class LoanCreate extends Component {
                                         </Row>
                                         <FormGroup className="mt-3">
                                             <Label htmlFor="totalLoan">Total Pinjaman Dengan Bunga</Label>
-                                            <CurrencyInput
-                                                disabled
-                                                className="form-control"
-                                                prefix="Rp. "
-                                                placeholder="Masukkan Total Pinjaman"
-                                                value={values.loanInterest !== -1 && values.totalLoan !== 0 ? values.totalLoan + (values.totalLoan * values.loanInterest / 100) : 0}
-                                                precision="0"
-                                                onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
-                                            />
+                                            <div className="input-group">
+                                                <div className="input-group-prepend">
+                                                    <div className="input-group-text">Rp</div>
+                                                </div>
+                                                <CurrencyInput
+                                                    disabled
+                                                    className="form-control pl-2"
+                                                    placeholder="Masukkan Total Pinjaman"
+                                                    value={values.loanInterest !== -1 && values.totalLoan !== 0 ? values.totalLoan + (values.totalLoan * values.loanInterest / 100) : 0}
+                                                    precision="0"
+                                                    onChange={(value, name) => setFieldValue("totalLoan", parseInt(value))}
+                                                />
+                                            </div>
                                             {errors.totalLoan && touched.totalLoan ? (
                                                 <FormFeedback className="d-block mt-1">
                                                     {errors.totalLoan}
@@ -328,6 +354,93 @@ class LoanCreate extends Component {
                                         />
                                     </CardBody>
                                 </Spin>
+                            </Card>
+                            <Card className="shadow-lg mt-4">
+                                <CardHeader className="border-0">
+                                    <h1 className="mb-0">Data Validasi</h1>
+                                </CardHeader>
+                                <CardBody>
+                                    <Row>
+                                        <Col md="6">
+                                            <h4>Selfie dengan KTP</h4>
+                                            <Dropzone
+                                                accept="image/jpeg, image/png"
+                                                onDrop={acceptedFiles => {
+                                                    setFieldValue('selfieWithIdCard', acceptedFiles);
+
+                                                    let reader = new FileReader();
+                                                    reader.readAsDataURL(new Blob(acceptedFiles));
+                                                    reader.onload = function() {
+                                                        setFieldValue('selfieWithIdCardBase64', reader.result);
+                                                    }
+                                                }}
+                                            >
+                                                {({ getRootProps, getInputProps }) => (
+                                                    <section>
+                                                        <div {...getRootProps()}>
+                                                            <input {...getInputProps()} />
+                                                            <span
+                                                                style={{
+                                                                    border: '3px dashed blue',
+                                                                    height: '300px'
+                                                                }}
+                                                                className="d-flex justify-content-center align-items-center"
+                                                            >
+                                                                {values.selfieWithIdCardBase64 ? (
+                                                                    <img
+                                                                        src={values.selfieWithIdCardBase64} 
+                                                                        className="img-thumbnail w-100"
+                                                                        alt=""
+                                                                        style={{ height: '300px' }}
+                                                                    />
+                                                                ) : 'Letakan foto selfie KTP disini'}
+                                                            </span>
+                                                        </div>
+                                                    </section>
+                                                )}
+                                            </Dropzone>
+                                        </Col>
+                                        <Col md="6">
+                                            <h4>Foto / Scan KTP</h4>
+                                            <Dropzone
+                                                accept="image/jpeg, image/png"
+                                                onDrop={acceptedFiles => {
+                                                    setFieldValue('idCard', acceptedFiles);
+
+                                                    let reader = new FileReader();
+                                                    reader.readAsDataURL(new Blob(acceptedFiles));
+                                                    reader.onload = function() {
+                                                        setFieldValue('idCardBase64', reader.result);
+                                                    }
+                                                }}
+                                            >
+                                                {({ getRootProps, getInputProps }) => (
+                                                    <section>
+                                                        <div {...getRootProps()}>
+                                                            <input {...getInputProps()} />
+                                                            <span
+                                                                style={{
+                                                                    border: '3px dashed blue',
+                                                                    height: '300px'
+                                                                }}
+                                                                className="d-flex justify-content-center align-items-center"
+                                                            >
+                                                                {values.idCardBase64 ? (
+                                                                    <img
+                                                                        src={values.idCardBase64} 
+                                                                        className="img-thumbnail w-100"
+                                                                        alt=""
+                                                                        style={{ height: '300px' }}
+                                                                    />
+                                                                ) : 'Letakan foto / scan KTP disini'}
+                                                            </span>
+                                                        </div>
+                                                    </section>
+                                                )}
+                                            </Dropzone>
+                                        </Col>
+                                    </Row>
+                                </CardBody>
                             </Card>
                             <Row className="mt-1">
                                 <div className="text-right mt-3 offset-md-7 col-md-2" sm="12">

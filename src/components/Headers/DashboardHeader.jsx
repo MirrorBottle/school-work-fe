@@ -19,7 +19,6 @@ import React from "react";
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
-import CountUp from 'react-countup';
 import FadeIn from 'react-fade-in';
 import Skeleton from "react-loading-skeleton";
 import { CurrencyLabel } from "components/Shared/Label";

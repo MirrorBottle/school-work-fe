@@ -17,5 +17,5 @@ export const OptionalBadge = ({ value }) => {
     } else if (value === "Lunas Terlambat" || value === "Angsuran" || "Membuat") {
         color = "info"
     }
-    return <h2><Badge color={color} pill>{value}</Badge></h2>
+    return <h2><Badge color={color} pill className="w-100 py-2">{value}</Badge></h2>
 }

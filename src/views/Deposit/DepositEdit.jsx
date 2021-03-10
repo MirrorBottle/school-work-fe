@@ -128,15 +128,19 @@ class DepositEdit extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                             <Label htmlFor="totalDeposit">Total Setoran</Label>
-                                            <CurrencyInput
-                                                disabled={isSubmitting}
-                                                className="form-control"
-                                                prefix="Rp. "
-                                                placeholder="Masukkan Total Setoran"
-                                                value={values.totalDeposit}
-                                                precision="0"
-                                                onChange={(value, name) => setFieldValue("totalDeposit", parseInt(value))}
-                                            />
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Rp</div>
+                                                </div>
+                                                <CurrencyInput
+                                                    disabled={isSubmitting}
+                                                    className="form-control"
+                                                    placeholder="Masukkan Total Setoran"
+                                                    value={values.totalDeposit}
+                                                    precision="0"
+                                                    onChange={(value, name) => setFieldValue("totalDeposit", parseInt(value))}
+                                                />
+                                            </div>
                                             {errors.totalDeposit && touched.totalDeposit ? (
                                                 <FormFeedback className="d-block mt-1">
                                                     {errors.totalDeposit}
