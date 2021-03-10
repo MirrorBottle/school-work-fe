@@ -72,6 +72,7 @@ class Sidebar extends React.Component {
           );
         }
       }
+      return null;
     });
   };
   render() {

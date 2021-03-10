@@ -251,6 +251,37 @@ class LoanDetail extends Component {
                         </Row>
                     </CardBody>
                 </Card>
+                {user('role') === 'Admin' && (
+                    <Card className="shadow-lg mt-4">
+                        <CardHeader className="border-0">
+                            <h1 className="mb-0">Data Validasi</h1>
+                        </CardHeader>
+                        <CardBody>
+                            <Row>
+                                <Col md="6">
+                                    <h4>Selfie dengan KTP</h4>
+                                    {this.state.loan.idCard && (
+                                        <img 
+                                            src={`${process.env.REACT_APP_BASE_URL}/images/validation/${this.state.loan.idCard}`} class="img-thumbnail" 
+                                            style={{ backgroundSize: 'cover', width: '100%', height: '300px' }}
+                                            alt=""
+                                        />
+                                    )}
+                                </Col>
+                                <Col md="6">
+                                    <h4>Foto / Scan KTP</h4>
+                                    {this.state.loan.selfieWithIdCard && (
+                                        <img 
+                                            src={`${process.env.REACT_APP_BASE_URL}/images/validation/${this.state.loan.selfieWithIdCard}`} class="img-thumbnail"
+                                            style={{ backgroundSize: 'cover', width: '100%', height: '300px' }}
+                                            alt=""
+                                        />
+                                    )}
+                                </Col>
+                            </Row>
+                        </CardBody>
+                    </Card>
+                )}
                 <Card className="shadow-lg mt-4">
                     <CardHeader className="border-0">
                         <h1 className="mb-0">Angsuran</h1>

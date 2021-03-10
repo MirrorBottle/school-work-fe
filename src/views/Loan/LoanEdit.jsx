@@ -18,7 +18,7 @@ import { DatePicker } from "antd";
 import moment from "moment";
 import CurrencyInput from "react-currency-input-field"
 import Select from "react-select"
-import { PaymentSelects, InterestSelects, LoadingButton, Confirm } from "components/Shared/Shared"
+import { PaymentSelects, InterestSelects, LoadingButton } from "components/Shared/Shared"
 import { Link, withRouter } from "react-router-dom"
 import { LoanFormSchema } from "./LoanCreate";
 import { Spin } from "antd";

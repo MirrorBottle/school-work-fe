@@ -8,20 +8,13 @@ import {
     Button,
     FormGroup,
     Label,
-    Form,
-    FormFeedback
 } from "reactstrap";
-import { DatePicker } from "antd";
 import withFadeIn from "components/HOC/withFadeIn";
-import { withRouter } from "react-router-dom";
-import * as Yup from "yup"
-import { Formik } from "formik"
 import moment from "moment";
 import { Spin, Alert as AntdAlert } from "antd";
 import CurrencyInput from "react-currency-input-field"
 import { LoadingButton } from "components/Shared/Shared"
 import API from "api"
-const { RangePicker } = DatePicker;
 class BalanceCreate extends Component {
     state = {
         balance: {},
@@ -44,7 +37,7 @@ class BalanceCreate extends Component {
             .catch((err) => console.log(err, err.response))
     }
     render() {
-        const { isLoading, balance, isSubmitting, currentBalance } = this.state;
+        const { isLoading, isSubmitting, currentBalance } = this.state;
         return (
             <Container className="mt--7" fluid>
                 <Card className="shadow">
